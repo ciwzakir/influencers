@@ -1,34 +1,50 @@
-import { getErrorMessageByPropertyName } from "@/utils/input.form.validators";
+"use client";
 import { Input } from "antd";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useFormContext, FieldValues, Path } from "react-hook-form";
 
-type TextAreaProps = {
-  name: string;
+const { TextArea } = Input;
+
+interface ITextArea<T extends FieldValues> {
+  name: Path<T>;
   label?: string;
-  rows?: number;
   placeholder?: string;
-};
+  rows?: number;
+  style?: React.CSSProperties;
+  // Add other props you need
+}
 
-const FormTextArea = ({ name, label, rows, placeholder }: TextAreaProps) => {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
-
-  // Use getErrorMessageByPropertyName to handle nested paths
-  const errorMessage = getErrorMessageByPropertyName(errors, name);
+const FormTextArea = <T extends FieldValues>({
+  name,
+  rows = 4,
+  placeholder,
+  label,
+}: ITextArea<T>) => {
+  const { control } = useFormContext<T>();
 
   return (
-    <div className="flex flex-col w-full">
-      {label && <label>{label}</label>}
+    <div style={{ marginBottom: "16px" }}>
+      {label && (
+        <label style={{ display: "block", marginBottom: "8px" }}>{label}</label>
+      )}
       <Controller
         name={name}
         control={control}
-        render={({ field }) => (
-          <Input.TextArea {...field} rows={rows} placeholder={placeholder} />
+        render={({ field, fieldState: { error } }) => (
+          <>
+            <TextArea
+              {...field}
+              rows={rows}
+              placeholder={placeholder}
+              status={error ? "error" : ""}
+            />
+            {error && (
+              <div style={{ color: "red", marginTop: "4px" }}>
+                {error.message}
+              </div>
+            )}
+          </>
         )}
       />
-      {errorMessage && <span style={{ color: "red" }}>{errorMessage}</span>}
     </div>
   );
 };

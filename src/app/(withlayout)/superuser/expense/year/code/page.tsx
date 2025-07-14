@@ -29,7 +29,7 @@ const ReturnAsPerCodePage = () => {
   >([null, null]);
 
   const userInfo = getUserInfo() as any;
-  const role = userInfo?.userRole || "superuser"; // Provide a fallback
+  const role = userInfo?.user_role ?? "superuser";
 
   const handleDateRangeChange = (payload: any) => {
     // console.log("handleDateRangeChange", payload);

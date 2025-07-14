@@ -14,22 +14,11 @@ const MemberInformation = () => {
         marginBottom: "25px",
       }}
     >
-      <p
-        style={{
-          fontSize: "18px",
-          marginBottom: "10px",
-        }}
-      >
+      <p style={{ fontSize: "18px", marginBottom: "10px" }}>
         Member Information
       </p>
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        <Col
-          className="gutter-row"
-          span={24}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
+        <Col className="gutter-row" span={24} style={{ marginBottom: "10px" }}>
           <FormTextArea
             name="member_info.short_bio"
             label="Short Bio"
@@ -37,18 +26,12 @@ const MemberInformation = () => {
             placeholder="Enter short bio"
           />
         </Col>
-        <Col
-          className="gutter-row"
-          span={8}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
+        <Col className="gutter-row" span={8} style={{ marginBottom: "10px" }}>
           <FormInput
             type="text"
             name="member_info.share"
             size="large"
-            label="share"
+            label="Share"
           />
         </Col>
       </Row>

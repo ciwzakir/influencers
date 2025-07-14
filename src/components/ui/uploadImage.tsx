@@ -1,87 +1,63 @@
-import React, { useState } from "react";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { message, Upload } from "antd";
-import type { GetProp, UploadProps } from "antd";
-import Image from "next/image";
-import { useFormContext } from "react-hook-form";
+import { Upload, Image } from "antd";
+import { useEffect, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
-
-const getBase64 = (img: FileType, callback: (url: string) => void) => {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result as string));
-
-  reader.readAsDataURL(img);
-};
-
-const beforeUpload = (file: FileType) => {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error("Image must smaller than 2MB!");
-  }
-  return isJpgOrPng && isLt2M;
-};
-
-type ImageUploadProps = {
+const ImageUploaderPage = ({
+  name,
+  defaultImageUrl,
+}: {
   name: string;
-};
-
-const ImageUploaderPage = ({ name }: ImageUploadProps) => {
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string>();
-  const { setValue } = useFormContext();
-
-  const handleChange: UploadProps["onChange"] = (info) => {
-    if (info.file.status === "uploading") {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === "done") {
-      // Get this url from response in real world.
-      setValue(name, info.file.originFileObj);
-      getBase64(info.file.originFileObj as FileType, (url) => {
-        setLoading(false);
-        setImageUrl(url);
-      });
-    }
-  };
-
-  const uploadButton = (
-    <button style={{ border: 0, background: "none" }} type="button">
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </button>
+  defaultImageUrl?: string;
+}) => {
+  const { control } = useFormContext();
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    defaultImageUrl || null
   );
 
+  useEffect(() => {
+    if (defaultImageUrl) {
+      setPreviewUrl(defaultImageUrl);
+    }
+  }, [defaultImageUrl]);
+
   return (
-    <>
-      <Upload
-        name={name}
-        listType="picture-card"
-        className="avatar-uploader"
-        showUploadList={false}
-        action="/api/file"
-        beforeUpload={beforeUpload}
-        onChange={handleChange}
-      >
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            width={100}
-            height={100}
-            alt="avatar"
-            style={{ width: "100%" }}
-          />
-        ) : (
-          uploadButton
-        )}
-      </Upload>
-    </>
+    <Controller
+      name={name}
+      control={control}
+      render={({ field }) => (
+        <>
+          {previewUrl && (
+            <Image
+              src={previewUrl}
+              alt="Uploaded Preview"
+              width={200}
+              style={{ marginBottom: 8, borderRadius: 4 }}
+            />
+          )}
+          <Upload
+            beforeUpload={(file) => {
+              const preview = URL.createObjectURL(file);
+              setPreviewUrl(preview);
+              field.onChange(file); // Set file to form
+              return false; // Prevent auto upload
+            }}
+            showUploadList={false}
+          >
+            <div
+              style={{
+                padding: "8px 12px",
+                border: "1px dashed #d9d9d9",
+                borderRadius: "6px",
+                cursor: "pointer",
+                textAlign: "center",
+              }}
+            >
+              Click or Drag to Upload
+            </div>
+          </Upload>
+        </>
+      )}
+    />
   );
 };
 

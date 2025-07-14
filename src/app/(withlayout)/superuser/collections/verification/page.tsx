@@ -2,20 +2,29 @@
 
 import React, { useEffect, Suspense } from "react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { Layout, Table, Image, message, Button } from "antd";
-import { EyeOutlined } from "@ant-design/icons";
+import { Layout, Image, message, Button, Typography, Grid } from "antd";
+import { BackwardOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import Link from "next/link";
-import { useCollectionsQuery } from "@/redux/api/colletionsApi";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import { useRouter } from "next/navigation";
 import { getUserInfo } from "@/app/services/auth.service";
+import { useCollectionsQuery } from "@/redux/api/uttoronapi/colletionsApi";
+import { CSVLink } from "react-csv";
+import { usePDF } from "react-to-pdf";
+import RETable from "@/components/ui/RETable";
 
 const { Content } = Layout;
+const { useBreakpoint } = Grid;
+const { Paragraph } = Typography;
 
-const PaidCollectionsPage = () => {
-  const { user_role } = getUserInfo() as any;
+const CollectionsVerificationPage = () => {
+  const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
+  const userInfo = getUserInfo() as any;
+  const role = userInfo?.user_role ?? "superuser";
 
   const router = useRouter();
+  const screens = useBreakpoint();
+
   const { data, error, isLoading } = useCollectionsQuery(
     {},
     { refetchOnMountOrArgChange: true }
@@ -24,12 +33,30 @@ const PaidCollectionsPage = () => {
   const filteredData = Array.isArray(data)
     ? data.filter((item) => item.current_payment_status === "verification")
     : [];
-  console.log("useCollectionsQuery", data);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const isFetchBaseQueryError = (error: any): error is FetchBaseQueryError => {
-    return error && typeof error.status === "number";
-  };
+  const totalDataLength = () => filteredData?.length || 0;
+
+  const flattenData = (data: any[]) =>
+    data.map((item) => ({
+      id: item.id,
+      title: item.title,
+      amount: item.amount,
+      total_paid_by_user: item.total_paid_by_user,
+      total_deposit_by_all: item.total_deposit_by_all,
+      current_payment_status: item.current_payment_status_display,
+      references: item.references,
+      payment_method: item.payment_method,
+      entry_date: item.entry_date,
+      due_date: item.due_date,
+      transaction_date: item.transaction_date,
+      received_from: item.received_from?.email || "",
+      deposit_to: item.deposit_to?.bank_name || "",
+      receivable_month: item.receivable_month?.name || "",
+    }));
+
+  // Helper to check error
+  const isFetchBaseQueryError = (error: any): error is FetchBaseQueryError =>
+    error && typeof error.status === "number";
 
   useEffect(() => {
     if (isFetchBaseQueryError(error) && error.status === 401) {
@@ -38,124 +65,145 @@ const PaidCollectionsPage = () => {
     }
   }, [error, router]);
 
-  if (isLoading) {
-    return <p>Loading profile...</p>;
-  }
-
-  if (error) {
-    return <p>Failed to load profile. Please try again later.</p>;
-  }
-
-  if (!data) {
-    return <p>No profile data found.</p>;
-  }
+  if (isLoading) return <p>Loading profile...</p>;
+  if (error) return <p>Failed to load profile. Please try again later.</p>;
+  if (!data) return <p>No profile data found.</p>;
 
   const columns = [
     {
       title: "Image",
       dataIndex: "payment_image",
-      render: (data: any) => {
-        if (data) {
-          return <Image src={data} width={100} height={100} alt="image" />;
-        } else return "No Image Found";
-      },
-    },
-    {
-      title: "Deposit To",
-      key: "deposit_to",
-      render: (record: any) => (
-        <>
-          <p>
-            <strong>{record.deposit_to?.account_name}</strong>
-          </p>
-          <p>{record.deposit_to?.bank_name}</p>
-        </>
-      ),
+      render: (data: any) =>
+        data ? (
+          <Image
+            src={data}
+            width={screens.xs ? 40 : 60}
+            height={screens.xs ? 40 : 60}
+            alt="payment image"
+          />
+        ) : (
+          "No Image"
+        ),
     },
     {
       title: "Received From",
       key: "received_from",
-      render: (record: any) => <p>Email: {record.received_from?.email}</p>,
+      render: (record: any) => (
+        <Paragraph>{record.received_from?.email || "N/A"}</Paragraph>
+      ),
+      sorter: (a: any, b: any) =>
+        (a.received_from?.email || "")
+          .toLowerCase()
+          .localeCompare((b.received_from?.email || "").toLowerCase()),
+      sortDirections: ["ascend", "descend"],
     },
+
     {
       title: "Amount",
       key: "amount",
-      render: (record: any) => <p>${record.amount}</p>,
+      render: (record: any) => <Paragraph>${record.amount}</Paragraph>,
     },
     {
-      title: "Payment on",
+      title: "Paid on",
       dataIndex: "entry_date",
       key: "entry_date",
     },
     {
-      title: "Payment Status",
-      key: "current_payment_status",
-      render: (record: any) => <p>{record.current_payment_status}</p>,
+      title: "Status",
+      key: "current_payment_status_display",
+      render: (record: any) => (
+        <Paragraph>{record.current_payment_status_display}</Paragraph>
+      ),
     },
     {
-      title: "Your Total Deposits",
-      key: "total_paid_by_user",
-      render: (record: any) => <p>{record.total_paid_by_user}</p>,
-    },
-    {
-      title: "All Deposits",
+      title: "Total Deposits",
       key: "total_deposit_by_all",
-      render: (record: any) => <p>{record.total_deposit_by_all}</p>,
+      render: (record: any) => (
+        <Paragraph>{record.total_deposit_by_all}</Paragraph>
+      ),
     },
     {
       title: "Actions",
-      render: (data: any) => {
-        return (
-          <div className="action-div">
-            <Link href={`/${user_role}/collections/verification/${data.id}`}>
-              <Button type="primary" ghost style={{ marginRight: "10px" }}>
-                <EyeOutlined /> View
-              </Button>
-            </Link>
-          </div>
-        );
-      },
+      align: "center" as const,
+      render: (data: any) => (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          <Link href={`/${role}/collections/verification/${data.id}`}>
+            <Button type="primary" ghost icon={<EyeOutlined />}>
+              View
+            </Button>
+          </Link>
+          <Link href={`/${role}/collections/verification/edit/${data.id}`}>
+            <Button type="primary" ghost icon={<EditOutlined />}>
+              Verify
+            </Button>
+          </Link>
+          <Link href={`/${role}/collections/verification/sendback/${data.id}`}>
+            <Button type="primary" ghost icon={<BackwardOutlined />}>
+              Send Back
+            </Button>
+          </Link>
+        </div>
+      ),
     },
   ];
 
   return (
     <Suspense fallback={<p>Loading profile...</p>}>
-      <div className="main-div">
-        <div className="bread-cumb">
+      <div style={{ padding: "16px" }}>
+        <div style={{ marginBottom: "16px" }}>
           <UMBreadCrumb
             items={[
-              {
-                label: "Dues",
-                link: `/${user_role}/collections/dues`,
-              },
-              {
-                label: "Paid",
-                link: `/${user_role}/collections/paid`,
-              },
+              { label: "Dues", link: `/${role}/collections/dues` },
+              { label: "Paid", link: `/${role}/collections/paid` },
             ]}
           />
         </div>
 
-        <Layout style={{ background: "#f0f2f5", padding: "20px" }}>
+        <Layout
+          ref={targetRef}
+          style={{ background: "#f0f2f5", padding: "16px" }}
+        >
           <Content
             style={{
-              maxWidth: "1400px",
+              maxWidth: "100%",
               background: "#fff",
-              padding: "20px",
+              padding: "16px",
               borderRadius: "10px",
+              overflowX: "auto",
             }}
           >
-            <Table
-              dataSource={filteredData}
+            <RETable
+              loading={false}
               columns={columns}
-              pagination={false}
-              rowKey="id"
+              dataSource={filteredData}
+              pageSize={10}
+              total={totalDataLength()}
+              showSizeChanger={false}
             />
           </Content>
         </Layout>
+        <div style={{ textAlign: "right", paddingRight: "100px" }}>
+          <Button
+            type="primary"
+            ghost
+            onClick={() => toPDF()}
+            style={{ marginRight: "10px" }}
+          >
+            Download PDF
+          </Button>
+          <CSVLink
+            data={flattenData(filteredData)}
+            filename="Verify req Table.csv"
+            onClick={() => message.success("The file is downloading")}
+          >
+            <Button type="primary" ghost>
+              Download Excel
+            </Button>
+          </CSVLink>
+        </div>
       </div>
     </Suspense>
   );
 };
 
-export default PaidCollectionsPage;
+export default CollectionsVerificationPage;

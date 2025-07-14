@@ -1,9 +1,12 @@
 "use client";
 
-import FormDatePicker from "@/components/forms/FormDatePicker";
+import React from "react";
+import { Card, Col, Row } from "antd";
+
 import FormInput from "@/components/forms/FormInput";
-import FormSelectField from "@/components/forms/FormSelectFields";
 import FormTextArea from "@/components/forms/FormTextArea";
+import FormSelectField from "@/components/forms/FormSelectFields";
+import FormDatePicker from "@/components/forms/FormDatePicker";
 import ImageUploaderPage from "@/components/ui/uploadImage";
 
 import {
@@ -11,232 +14,139 @@ import {
   genderOptions,
   marriedOptions,
 } from "@/constants/selectOptions";
-import { Col, Row } from "antd";
-import React from "react";
 
-const PersonalInformation = () => {
+const PersonalInformation = ({
+  profile_picture,
+}: {
+  profile_picture?: string;
+}) => {
   return (
     <div
       style={{
         border: "1px solid #d9d9d9",
-        borderRadius: "5px",
-        padding: "15px",
-        marginBottom: "25px",
+        borderRadius: "8px",
+        padding: "24px",
+        marginBottom: "32px",
+        background: "#fff",
       }}
     >
-      <br />
-      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        <Col className="gutter-row" span={8} style={{ marginBottom: "10px" }}>
-          <ImageUploaderPage name="file" />
+      <Row gutter={[16, 16]}>
+        <Col xs={24} sm={12} md={8}>
+          <FormInput name="email" label="Email" size="large" disabled />
         </Col>
-        <Col
-          className="gutter-row"
-          span={8}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
-          <FormInput
-            name="email"
-            type="text"
-            size="large"
-            label="Email"
-            disabled
-          />
+        <Col xs={24} sm={12} md={8}>
+          <FormInput name="first_name" label="First Name" size="large" />
         </Col>
-        <Col
-          className="gutter-row"
-          span={8}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
-          <FormInput
-            type="text"
-            name="first_name"
-            size="large"
-            label="First Name"
-          />
-        </Col>
-        <Col
-          className="gutter-row"
-          span={8}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
-          <FormInput
-            type="text"
-            name="last_name"
-            size="large"
-            label="Last Name"
-          />
+        <Col xs={24} sm={12} md={8}>
+          <FormInput name="last_name" label="Last Name" size="large" />
         </Col>
 
-        <Col
-          className="gutter-row"
-          span={8}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
+        <Col xs={24} sm={12} md={8}>
           <FormInput
-            type="text"
             name="personal_info.father_name"
+            label="Father's Name"
             size="large"
-            label="father_name"
           />
         </Col>
-
-        <Col
-          className="gutter-row"
-          span={8}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
+        <Col xs={24} sm={12} md={8}>
           <FormInput
-            type="text"
             name="personal_info.mother_name"
+            label="Mother's Name"
             size="large"
-            label="mother_name"
           />
         </Col>
-
-        <Col
-          className="gutter-row"
-          span={8}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
+        <Col xs={24} sm={12} md={8}>
           <FormDatePicker
             name="personal_info.dob"
-            label="DOB"
+            label="Date of Birth"
             size="large"
-          ></FormDatePicker>
+          />
         </Col>
 
-        <Col
-          className="gutter-row"
-          span={8}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
+        <Col xs={24} sm={12} md={8}>
           <FormSelectField
-            size="large"
             name="personal_info.marital_status"
-            options={marriedOptions}
             label="Marital Status"
+            options={marriedOptions}
             placeholder="Select"
+            size="large"
           />
         </Col>
-        <Col
-          className="gutter-row"
-          span={8}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
+        <Col xs={24} sm={12} md={8}>
           <FormSelectField
-            size="large"
             name="personal_info.blood_group"
-            options={bloodGroupOptions}
             label="Blood Group"
+            options={bloodGroupOptions}
             placeholder="Select"
+            size="large"
           />
         </Col>
-
-        <Col
-          className="gutter-row"
-          span={8}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
+        <Col xs={24} sm={12} md={8}>
           <FormSelectField
-            size="large"
             name="personal_info.gender"
-            options={genderOptions}
             label="Gender"
+            options={genderOptions}
             placeholder="Select"
+            size="large"
           />
         </Col>
 
-        <Col
-          className="gutter-row"
-          span={8}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
+        <Col xs={24} sm={12} md={8}>
           <FormInput
-            type="text"
             name="personal_info.nationality"
+            label="Nationality"
             size="large"
-            label="nationality"
           />
         </Col>
-
-        <Col
-          className="gutter-row"
-          span={8}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
+        <Col xs={24} sm={12} md={8}>
           <FormInput
-            type="text"
             name="personal_info.phone_number"
-            size="large"
             label="Contact Number"
+            size="large"
           />
         </Col>
       </Row>
 
-      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        <Col
-          className="gutter-row"
-          span={12}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
+      <Row gutter={[16, 16]} style={{ marginTop: "24px" }}>
+        <Col xs={24} md={12}>
           <FormTextArea
             name="personal_info.employment_address"
+            label="Employment Address"
+            placeholder="Where are you employed?"
             rows={4}
-            label="Employed In"
-            placeholder="Where are u"
           />
         </Col>
-        <Col
-          className="gutter-row"
-          span={12}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
+        <Col xs={24} md={12}>
           <FormTextArea
             name="personal_info.present_address"
-            rows={4}
             label="Present Address"
-            placeholder="Insert Your Present Address"
+            placeholder="Enter your present address"
+            rows={4}
           />
         </Col>
-        <Col
-          className="gutter-row"
-          span={12}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
+        <Col xs={24} md={12}>
           <FormTextArea
             name="personal_info.permanent_address"
-            rows={4}
             label="Permanent Address"
-            placeholder="Insert Your Permanent Address"
+            placeholder="Enter your permanent address"
+            rows={4}
           />
+        </Col>
+        <Col xs={24} md={12}>
+          <Card
+            title=" Change Profile Picture"
+            hoverable
+            style={{
+              borderRadius: "8px",
+              height: "100%",
+            }}
+            bodyStyle={{ padding: "16px", textAlign: "center" }}
+          >
+            <ImageUploaderPage
+              name="profile_picture"
+              defaultImageUrl={profile_picture}
+            />
+          </Card>
         </Col>
       </Row>
     </div>

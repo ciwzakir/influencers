@@ -1,76 +1,62 @@
 "use client";
-
-import { getErrorMessageByPropertyName } from "@/utils/input.form.validators";
 import { Input } from "antd";
-import { useFormContext, Controller } from "react-hook-form";
-interface IInput {
-  name: string;
-  type?: string;
-  size?: "large" | "small";
-  value?: string | string[] | undefined;
-  id?: string;
-  placeholder?: string;
-  validation?: object;
+import { Controller, useFormContext, FieldValues, Path } from "react-hook-form";
+
+interface IInput<T extends FieldValues> {
+  name: Path<T>;
   label?: string;
-  required?: boolean;
+  placeholder?: string;
+  type?: string;
+  size?: "large" | "middle" | "small";
   disabled?: boolean;
+  // Add other props you need
 }
 
-const FormInput = ({
+const FormInput = <T extends FieldValues>({
   name,
   type,
   size = "large",
-  value,
   placeholder,
   label,
-  disabled,
-  required,
-}: IInput) => {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
-
-  const errorMessage = getErrorMessageByPropertyName(errors, name);
+}: IInput<T>) => {
+  const { control } = useFormContext<T>();
 
   return (
-    <>
-      {required ? (
-        <span
-          style={{
-            color: "red",
-          }}
-        >
-          *
-        </span>
-      ) : null}
-      {label ? label : null}
+    <div style={{ marginBottom: "16px" }}>
+      {label && (
+        <label style={{ display: "block", marginBottom: "8px" }}>{label}</label>
+      )}
       <Controller
-        control={control}
         name={name}
-        render={({ field }) =>
-          type === "password" ? (
-            <Input.Password
-              type={type}
-              size={size}
-              placeholder={placeholder}
-              {...field}
-              value={value ? value : field.value}
-            />
-          ) : (
-            <Input
-              type={type}
-              disabled={disabled}
-              size={size}
-              placeholder={placeholder}
-              {...field}
-              value={value ? value : field.value}
-            />
-          )
-        }
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <>
+            {type === "password" ? (
+              <Input.Password
+                {...field}
+                type={type}
+                size={size}
+                placeholder={placeholder}
+                status={error ? "error" : ""}
+              />
+            ) : (
+              <Input
+                {...field}
+                type={type}
+                size={size}
+                placeholder={placeholder}
+                status={error ? "error" : ""}
+              />
+            )}
+            {error && (
+              <div style={{ color: "red", marginTop: "4px" }}>
+                {error.message}
+              </div>
+            )}
+          </>
+        )}
       />
-      <small style={{ color: "red" }}>{errorMessage}</small>
-    </>
+    </div>
   );
 };
 

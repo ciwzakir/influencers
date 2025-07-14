@@ -1,59 +1,39 @@
 import { baseApi } from "./baseApi";
 import { tagTypes } from "./tag-types";
 
-const AUTH_URL = "api/v1/auth";
+const AUTH_URL = "api/v1/auth"; // No leading slash
 
 export const userAuthApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    /* 
-=============================
-Login Mutation
-=============================
-*/
+    // Login Mutation
     userLogin: build.mutation({
       query: (data) => ({
-        url: `/${AUTH_URL}/login/`,
+        url: `${AUTH_URL}/login/`,
         method: "POST",
-        data: data,
+        data,
       }),
       invalidatesTags: [tagTypes.user],
     }),
 
-    /* 
-    =============================
-    My Profile Query
-    =============================
-    */
-
+    // My Profile Query
     myProfile: build.query({
-      query: (id) => {
-        return {
-          url: `/${AUTH_URL}/profile/${id}/`,
-          method: "GET",
-        };
-      },
+      query: (id) => ({
+        url: `${AUTH_URL}/profile/${id}/`,
+        method: "GET",
+      }),
       providesTags: [tagTypes.profile],
     }),
-    /* 
-    =============================
-    My Profile Query
-    =============================
-    */
 
+    // Update Profile Mutation
     updateProfile: build.mutation({
-      query: ({ id, formData }) => ({
-        url: `/${AUTH_URL}/profile/${id}/`,
+      query: ({ id, data }) => ({
+        url: `${AUTH_URL}/profile/${id}/`,
         method: "PATCH",
-        data: formData,
-        contentType: "multipart/form-data",
+        data,
       }),
     }),
 
-    /* 
-    =============================
-    section
-    =============================
-    */
+    // Closing
   }),
 });
 

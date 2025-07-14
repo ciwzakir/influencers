@@ -23,7 +23,7 @@ const SentBackstBill = ({ params }: { params: { id: string } }) => {
   const { data: getSingleData, isLoading } = useGetSingleBillQuery(id);
 
   const userInfo = getUserInfo() as any;
-  const role = userInfo?.userRole || "superuser"; // Provide a fallback
+  const role = userInfo?.user_role ?? "superuser";
   const router = useRouter();
   console.log("getSingleData", getSingleData?.title);
 

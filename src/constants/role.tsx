@@ -1,5 +1,9 @@
 export enum USER_ROLE {
-  SUPER_ADMIN = "superuser",
+  SUPER_USER = "superuser",
   ADMIN = "admin",
-  OTHER = "other",
+  UTTORON_APPROVAL_ID = "utapp",
+  UTTORON_ENTRY_USER_ID = "utentry",
+  ACCOUNTS_APPROVAL_ID = "acctsapp",
+  ACCOUNTS_ENTRY_USER_ID = "acctentry",
+  OTHER = "others",
 }

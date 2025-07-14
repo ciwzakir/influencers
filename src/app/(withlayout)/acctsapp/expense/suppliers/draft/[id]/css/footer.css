@@ -1,0 +1,14 @@
+.list__style--none {
+  list-style: none;
+  /* margin-left: -40px; */
+  margin-top: 70px;
+  font-size: 18px;
+}
+
+.payment__method {
+  margin-top: -40px;
+}
+
+.countersign__styles--action {
+  margin-top: 100px;
+}

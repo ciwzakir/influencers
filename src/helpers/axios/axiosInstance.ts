@@ -9,7 +9,7 @@ const instance = axios.create({
 });
 
 // Default headers for JSON requests
-instance.defaults.headers.post["Content-Type"] = "application/json";
+// instance.defaults.headers.post["Content-Type"] = "application/json";
 instance.defaults.headers["Accept"] = "application/json";
 
 // Intercepting requests
@@ -18,11 +18,6 @@ instance.interceptors.request.use(
     const accessToken = getFromLocalStorage(authKey);
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-
-    // Automatically set Content-Type for FormData
-    if (config.data instanceof FormData) {
-      config.headers["Content-Type"] = "multipart/form-data";
     }
 
     return config;

@@ -25,9 +25,11 @@ export const axiosBaseQuery =
         method,
         data,
         params,
-        headers: {
-          "Content-Type": contentType || "application/json",
-        },
+        // headers: {
+        //   "Content-Type": contentType || "application/json",
+        // },
+        headers: contentType ? { "Content-Type": contentType } : undefined,
+
         withCredentials: true, // Ensuring cookies are sent
       });
       return result;
