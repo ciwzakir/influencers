@@ -43,7 +43,7 @@ const RegisterUserPage = () => {
       <Col xs={24} sm={20} md={12} lg={8}>
         <div className={styles.registerContainer}>
           <Title level={2} style={{ textAlign: "center", marginBottom: 24 }}>
-            Register
+            Register Page
           </Title>
           <Form
             submitHandler={onSubmit}
