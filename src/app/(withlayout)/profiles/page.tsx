@@ -26,20 +26,13 @@ import {
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import { getUserInfo } from "@/app/services/auth.service";
 import { useMyProfileQuery } from "@/redux/api/authApi";
-// import { ExperienceProvider } from "./misc/contexts/ExperienceContext";
-// import MyPlan from "./misc/myPlan";
-// import type { ColumnsType } from "antd/es/table";
+import styles from "./profile.module.css";
+import "./profile.module.css";
 
 const { Title } = Typography;
 const { Content } = Layout;
 
 const MyProfilePage = () => {
-  // type Qualification = {
-  //   id: number;
-  //   certification: string;
-  //   institute_name: string;
-  //   graduation_year: number;
-  // };
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -49,35 +42,8 @@ const MyProfilePage = () => {
     refetchOnMountOrArgChange: true,
   });
 
-  console.log(data);
   const imageUrl = data?.personal_info?.profile_picture || "";
-  const {
-    personal_info = {},
-    member_info = {},
-    // qualifications = [],
-    // experiences_info = [],
-  } = data || {};
-
-  // const columns: ColumnsType<Qualification> = [
-  //   {
-  //     title: "Certification",
-  //     dataIndex: "certification",
-  //     key: "certification",
-  //     responsive: ["xs", "sm", "md"],
-  //   },
-  //   {
-  //     title: "Institute Name",
-  //     dataIndex: "institute_name",
-  //     key: "institute_name",
-  //     responsive: ["xs", "sm", "md"],
-  //   },
-  //   {
-  //     title: "Passing Year",
-  //     dataIndex: "graduation_year",
-  //     key: "graduation_year",
-  //     responsive: ["xs", "sm", "md"],
-  //   },
-  // ];
+  const { personal_info = {}, member_info = {} } = data || {};
 
   const isFetchBaseQueryError = (error: any): error is FetchBaseQueryError =>
     error && typeof error.status === "number";
@@ -90,79 +56,60 @@ const MyProfilePage = () => {
   }, [error, router]);
 
   if (isLoading) return <p>Loading profile...</p>;
-  // if (!data) return <p>No profile data found.</p>;
   if (error) return <p>Failed to load profile. Please try again later.</p>;
 
   return (
     <Suspense fallback="Loading">
-      <div style={{ padding: "16px" }}>
+      <div className={styles.pageContainer}>
         <UMBreadCrumb
           items={[{ label: "Edit Profile", link: `profiles/edit/${data.id}` }]}
         />
 
-        <Layout style={{ background: "#f0f2f5", padding: "20px" }}>
-          <Content
-            style={{
-              maxWidth: "1000px",
-              margin: "0 auto",
-              background: "#fff",
-              padding: "24px",
-              borderRadius: "10px",
-            }}
-          >
+        <Layout className={styles.layout}>
+          <Content className={styles.content}>
+            {/* Top Section */}
             <Row gutter={[16, 16]} align="top">
-              {/* Left section: User Name */}
               <Col xs={24} md={12}>
-                <div style={{ textAlign: "left" }}>
-                  <Typography.Text strong style={{ fontSize: "18px" }}>
+                <div className={styles.userInfo}>
+                  <Typography.Text strong className={styles.userName}>
                     {data?.full_name || "User Name"}
                   </Typography.Text>
-                  <p style={{ margin: "4px 0" }}>Member of Uttoron 2005</p>
+                  <p className={styles.userMeta}>{member_info.appointment}</p>
+                  <p className={styles.userMeta}>Member of Uttoron 2005</p>
                 </div>
               </Col>
 
-              {/* Right section: Contact Info */}
-              <Col
-                xs={24}
-                md={12}
-                style={{
-                  textAlign: "left", // default left
-                }}
-              >
-                <div
-                  style={{
-                    textAlign: "right",
-                  }}
-                  className="contact-section"
-                >
+              <Col xs={24} md={12} className="contact-section">
+                <div className={styles.contactInfo}>
                   <Typography.Text>
                     <MailOutlined />
-                    <span style={{ paddingLeft: "6px" }}>
+                    <span className={styles.contactItem}>
                       {data?.email || "Not Available"}
                     </span>
                     <br />
                     <PhoneOutlined />
-                    <span style={{ paddingLeft: "6px" }}>
+                    <span className={styles.contactItem}>
                       {personal_info?.phone_number || "Not Available"}
                     </span>
                     <br />
                     <BankOutlined />
-                    <span style={{ paddingLeft: "6px" }}>
+                    <span className={styles.contactItem}>
                       {personal_info?.employment_address || "Not Available"}
                     </span>
                   </Typography.Text>
 
-                  <div style={{ marginTop: "8px" }}>
+                  <div className={styles.socialLinks}>
                     <Typography.Link
                       href="https://whatsapp.com"
                       target="_blank"
-                      style={{ marginRight: "12px" }}
+                      className={styles.socialLink}
                     >
                       <WhatsAppOutlined /> WhatsApp
                     </Typography.Link>
                     <Typography.Link
                       href="https://facebook.com"
                       target="_blank"
+                      className={styles.socialLink}
                     >
                       <FacebookOutlined /> Facebook
                     </Typography.Link>
@@ -171,104 +118,134 @@ const MyProfilePage = () => {
               </Col>
             </Row>
 
-            <Divider />
+            <Divider className={styles.divider} />
 
-            <Card loading={loading} style={{ width: "100%" }}>
-              <Card.Meta
-                avatar={<Avatar src={imageUrl} size={64} />}
-                title={`This is ${data.first_name}`}
-                description={
-                  <p style={{ textAlign: "justify" }}>
-                    {member_info?.short_bio || "No bio available"}
-                  </p>
-                }
-              />
+            {/* Profile Card */}
+            <Card loading={loading} className={styles.profileCard} hoverable>
+              <Row gutter={[16, 16]}>
+                <Col xs={24} sm={6} md={4} lg={3} xl={2}>
+                  <Avatar
+                    src={imageUrl}
+                    size={{
+                      xs: 64,
+                      md: 64,
+                      lg: 72,
+                      xl: 80,
+                    }}
+                    className={styles.profileAvatar}
+                  />
+                </Col>
+
+                <Col xs={24} sm={18} md={20} lg={21} xl={22}>
+                  <div className={styles.profileContent}>
+                    <h3 className={styles.profileTitle}>
+                      Hi {data.first_name}
+                    </h3>
+                    <p className={styles.profileBio}>
+                      {member_info?.short_bio || "No bio available"}
+                    </p>
+                  </div>
+                </Col>
+              </Row>
             </Card>
 
             <Switch
               checked={!loading}
               onChange={(checked) => setLoading(!checked)}
-              style={{ marginTop: "10px" }}
+              className={styles.toggleSwitch}
+              style={{ marginBottom: "20px" }}
             />
 
-            <Divider />
+            {/* Personal Information Section */}
+            <div className={styles.sectionContainer}>
+              <Title level={4} className={styles.sectionTitle}>
+                Personal Information
+              </Title>
 
-            <Title level={4}>PERSONAL INFORMATION :</Title>
-            <Descriptions
-              column={{ xs: 1, sm: 2, md: 2 }}
-              bordered={false}
-              layout="vertical"
-            >
-              <Descriptions.Item label="Father's Name">
-                {personal_info?.father_name || "Not Available"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Mother's Name">
-                {personal_info?.mother_name || "Not Available"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Date of Birth">
-                {personal_info?.dob || "Not Available"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Gender">
-                {personal_info?.gender
-                  ? personal_info.gender.charAt(0).toUpperCase() +
-                    personal_info.gender.slice(1)
-                  : "Not Available"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Marital Status">
-                {personal_info?.marital_status
-                  ? personal_info.marital_status.charAt(0).toUpperCase() +
-                    personal_info.marital_status.slice(1)
-                  : "Not Available"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Nationality">
-                {personal_info?.nationality || "Not Available"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Phone Number">
-                {personal_info?.phone_number || "Not Available"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Employed in">
-                {personal_info?.employment_address || "Not Available"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Present Address">
-                {personal_info?.present_address || "Not Available"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Permanent Address">
-                {personal_info?.permanent_address || "Not Available"}
-              </Descriptions.Item>
-            </Descriptions>
+              <Descriptions
+                layout="horizontal"
+                bordered={false}
+                column={{
+                  xs: 1, // Always 1 column on extra small devices
+                  sm: 1, // 1 column on small devices
+                  md: 2, // 2 columns on medium and larger
+                  lg: 2,
+                  xl: 2,
+                  xxl: 2,
+                }}
+                colon={false}
+                labelStyle={{
+                  fontWeight: 500,
+                  minWidth: "120px",
+                  wordBreak: "break-word",
+                  paddingBottom: "8px", // Added spacing for vertical layout
+                }}
+                contentStyle={{
+                  color: "#444",
+                  wordBreak: "break-word",
+                  paddingBottom: "16px", // Added spacing between items
+                }}
+              >
+                <Descriptions.Item label="Father's Name">
+                  {personal_info?.father_name || "Not Available"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Mother's Name">
+                  {personal_info?.mother_name || "Not Available"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Date of Birth">
+                  {personal_info?.dob || "Not Available"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Gender">
+                  {personal_info?.gender
+                    ? personal_info.gender.charAt(0).toUpperCase() +
+                      personal_info.gender.slice(1)
+                    : "Not Available"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Marital Status">
+                  {personal_info?.marital_status
+                    ? personal_info.marital_status.charAt(0).toUpperCase() +
+                      personal_info.marital_status.slice(1)
+                    : "Not Available"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Nationality">
+                  {personal_info?.nationality || "Not Available"}
+                </Descriptions.Item>
+              </Descriptions>
+            </div>
+            {/* Address Section */}
 
-            {/* <Divider />
-          <Title level={4}>ACADEMIC HISTORY (Under constructions)</Title>
-
-          <Table
-            dataSource={qualifications}
-            columns={columns}
-            pagination={false}
-            rowKey={(record) => record.id}
-            scroll={{ x: "100%" }}
-          />
-
-          <Divider />
-
-          <ExperienceProvider experiences={experiences_info}>
-            <Title level={4}>Under Constructions</Title>
-            <MyPlan />
-          </ExperienceProvider>
-
-          <Divider />
-
-          <Title level={4}>More Info</Title>
-          <Descriptions column={1}>
-            <Descriptions.Item label="Number of Share">
-              {member_info?.share || "Not Available"}
-            </Descriptions.Item>
-            <Descriptions.Item label="Your Role">
-              {member_info?.user_role || member_info?.id}
-            </Descriptions.Item>
-            <Descriptions.Item label="Joined On">
-              {data?.date_joined || "Not Available"}
-            </Descriptions.Item>
-          </Descriptions> */}
+            {data && (
+              <div className={styles.addressSection}>
+                <Title level={4} className={styles.sectionTitle}>
+                  Address
+                </Title>
+                <Row gutter={[16, 16]}>
+                  {[
+                    {
+                      title: "Present Address",
+                      value: personal_info?.present_address,
+                    },
+                    {
+                      title: "Permanent Address",
+                      value: personal_info?.permanent_address,
+                    },
+                    {
+                      title: "Employment Address",
+                      value: personal_info?.employment_address,
+                    },
+                  ].map((item, index) => (
+                    <Col key={index} xs={24} sm={12} md={8}>
+                      <div className={styles.addressCard}>
+                        <Typography.Text strong>{item.title}</Typography.Text>
+                        <p className={styles.addressText}>
+                          {item.value || "Not Available"}
+                        </p>
+                      </div>
+                    </Col>
+                  ))}
+                </Row>
+              </div>
+            )}
           </Content>
         </Layout>
       </div>

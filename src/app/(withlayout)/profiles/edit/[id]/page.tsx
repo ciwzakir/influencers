@@ -1,6 +1,6 @@
 "use client";
 
-import { Col, Row, message, Spin } from "antd";
+import { Col, Row, message, Spin, Layout } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import dayjs from "dayjs";
@@ -16,6 +16,8 @@ import updateProfileSchema from "@/validatorsSchema/user/update";
 
 import PersonalInformation from "@/components/user/update/PersonalInformation";
 import MemberInformation from "@/components/user/update/MemberInfo";
+
+const { Content } = Layout;
 
 const EditProfilePage = () => {
   const router = useRouter();
@@ -169,20 +171,31 @@ const EditProfilePage = () => {
 
   return (
     <div className="main">
-      <Row justify="center" align="middle" style={{ minHeight: "100vh" }}>
-        <Col xs={24} md={16} lg={12}>
-          <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
-            Update Profile
-          </h1>
-          <StepperForm
-            steps={steps}
-            submitHandler={handleProfileUpdateSubmit}
-            defaultValues={myProfileDefaultValues}
-            persistKey="editProfilePersistKey"
-            validationSchema={updateProfileSchema}
-          />
-        </Col>
-      </Row>
+      <Layout style={{ minHeight: "100vh" }}>
+        <Content
+          style={{
+            padding: "24px 16px",
+            maxWidth: "1200px",
+            margin: "0 auto",
+            width: "100%",
+          }}
+        >
+          <Row justify="center" align="middle">
+            <Col span={24}>
+              <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
+                Update Profile
+              </h1>
+              <StepperForm
+                steps={steps}
+                submitHandler={handleProfileUpdateSubmit}
+                defaultValues={myProfileDefaultValues}
+                persistKey="editProfilePersistKey"
+                validationSchema={updateProfileSchema}
+              />
+            </Col>
+          </Row>
+        </Content>
+      </Layout>
     </div>
   );
 };

@@ -1,0 +1,178 @@
+/* Layout Styles */
+.pageContainer {
+  padding: 10px;
+}
+
+.layout {
+  background: #f0f2f5;
+  padding: 20px;
+}
+
+.content {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 24px;
+  border-radius: 10px;
+}
+
+/* User Info Styles */
+.userInfo {
+  text-align: left;
+}
+
+.userName {
+  font-size: 18px;
+}
+
+.userMeta {
+  margin: 4px 0;
+  color: #666;
+}
+
+/* Contact Info Styles */
+.contactInfo {
+  text-align: right;
+}
+
+.contactItem {
+  padding-left: 6px;
+}
+
+.socialLinks {
+  margin-top: 8px;
+}
+
+.socialLink {
+  margin-right: 12px;
+}
+
+/* Divider */
+.divider {
+  margin: 16px 0;
+  border-color: #f0f0f0;
+}
+
+/* Profile Card */
+.profileCard {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 16px;
+  transition: all 0.3s;
+}
+
+.profileAvatar {
+  width: 100%;
+  height: auto;
+}
+
+.profileContent {
+  padding-left: 8px;
+}
+
+.profileTitle {
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.profileBio {
+  text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: clamp(14px, 3vw, 16px);
+  margin: 0;
+  color: #444;
+}
+
+/* Toggle Switch */
+.toggleSwitch {
+  margin-top: 10px;
+}
+
+/* Section Styles */
+.sectionContainer {
+  background: #fafafa;
+  padding: 24px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  border: 1px solid #f0f0f0;
+}
+
+.sectionTitle {
+  margin-bottom: 16px;
+  font-size: 20px;
+  text-align: left;
+}
+
+/* Address Section */
+.addressSection {
+  transition: all 0.3s ease;
+}
+
+.addressSection:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.addressCard {
+  padding: 16px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+  height: 100%;
+}
+/* In your profile.module.css */
+
+.addressCard {
+  padding: 16px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+/* profile.module.css */
+.addressCard {
+  padding: 16px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #f0f0f0;
+  height: 100%;
+  position: relative;
+  /* Simple transition that won't cause DOM issues */
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.addressCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #d9d9d9;
+}
+.addressText {
+  margin-top: 8px;
+  margin-bottom: 0;
+  color: #444;
+}
+
+.addressText:empty::before {
+  content: "Not Available";
+  color: #bfbfbf;
+}
+
+/* For medium devices and up */
+@media (min-width: 768px) {
+  .descriptions:global(.ant-descriptions-vertical) {
+    display: table;
+  }
+
+  .descriptions:global(.ant-descriptions-item-label) {
+    padding-bottom: 0;
+  }
+
+  .descriptions:global(.ant-descriptions-item-content) {
+    padding-bottom: 0;
+  }
+}

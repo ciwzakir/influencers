@@ -20,7 +20,7 @@ const { Paragraph } = Typography;
 const CollectionsVerificationPage = () => {
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
   const userInfo = getUserInfo() as any;
-  const role = userInfo?.user_role ?? "superuser";
+  const role = userInfo?.user_role ?? "admin";
 
   const router = useRouter();
   const screens = useBreakpoint();
