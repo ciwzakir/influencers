@@ -1,20 +1,9 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import {
-  Layout,
-  Row,
-  Col,
-  Descriptions,
-  Divider,
-  message,
-  Card,
-  Switch,
-  Typography,
-  Avatar,
-} from "antd";
+import { Layout, Row, Col, message, Typography, Card, Image } from "antd";
 import {
   MailOutlined,
   PhoneOutlined,
@@ -22,18 +11,19 @@ import {
   FacebookOutlined,
   BankOutlined,
 } from "@ant-design/icons";
-
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import { getUserInfo } from "@/app/services/auth.service";
 import { useMyProfileQuery } from "@/redux/api/authApi";
 import styles from "./profile.module.css";
 import "./profile.module.css";
 
+const { Meta } = Card;
+
 const { Title } = Typography;
+
 const { Content } = Layout;
 
 const MyProfilePage = () => {
-  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const { user_id: id } = getUserInfo() as any;
@@ -74,144 +64,163 @@ const MyProfilePage = () => {
                   <Typography.Text strong className={styles.userName}>
                     {data?.full_name || "User Name"}
                   </Typography.Text>
-                  <p className={styles.userMeta}>{member_info.appointment}</p>
+
                   <p className={styles.userMeta}>Member of Uttoron 2005</p>
                 </div>
               </Col>
 
-              <Col xs={24} md={12} className="contact-section">
-                <div className={styles.contactInfo}>
-                  <Typography.Text>
-                    <MailOutlined />
-                    <span className={styles.contactItem}>
-                      {data?.email || "Not Available"}
-                    </span>
-                    <br />
-                    <PhoneOutlined />
-                    <span className={styles.contactItem}>
-                      {personal_info?.phone_number || "Not Available"}
-                    </span>
-                    <br />
-                    <BankOutlined />
-                    <span className={styles.contactItem}>
-                      {personal_info?.employment_address || "Not Available"}
-                    </span>
-                  </Typography.Text>
+              <Col xs={24} md={12}>
+                <div className={styles.contactContainer}>
+                  <div className={styles.contactInfo}>
+                    <Typography.Text>
+                      <MailOutlined />
+                      <span className={styles.contactItem}>
+                        {data?.email || "Not Available"}
+                      </span>
+                      <br />
+                      <PhoneOutlined />
+                      <span className={styles.contactItem}>
+                        {personal_info?.phone_number || "Not Available"}
+                      </span>
+                      <br />
+                      <BankOutlined />
+                      <span className={styles.contactItem}>
+                        {personal_info?.employment_address || "Not Available"}
+                      </span>
+                      <br />
+                      <Typography.Link
+                        href="https://whatsapp.com"
+                        target="_blank"
+                        className={styles.contactItem}
+                      >
+                        <FacebookOutlined /> Facebook
+                      </Typography.Link>
 
-                  <div className={styles.socialLinks}>
-                    <Typography.Link
-                      href="https://whatsapp.com"
-                      target="_blank"
-                      className={styles.socialLink}
-                    >
-                      <WhatsAppOutlined /> WhatsApp
-                    </Typography.Link>
-                    <Typography.Link
-                      href="https://facebook.com"
-                      target="_blank"
-                      className={styles.socialLink}
-                    >
-                      <FacebookOutlined /> Facebook
-                    </Typography.Link>
+                      <Typography.Link
+                        href="https://facebook.com"
+                        target="_blank"
+                        className={styles.contactItem}
+                      >
+                        <WhatsAppOutlined /> WhatsApp
+                      </Typography.Link>
+                    </Typography.Text>
                   </div>
                 </div>
               </Col>
             </Row>
 
-            <Divider className={styles.divider} />
+            <div className={styles.profileSection}>
+              <div className={styles.splitterWrapper}>
+                {/* Left Panel */}
+                <div className={styles.leftPanel}>
+                  <h2 style={{ padding: "50px 0 0" }}>
+                    <span style={{ color: "#020711ff" }}>My Goal</span>
+                  </h2>
+                  <p
+                    className={styles.profileBio}
+                    style={{ marginTop: "20px" }}
+                  >
+                    {member_info?.short_bio || "No bio available"}
+                  </p>
+                </div>
 
-            {/* Profile Card */}
-            <Card loading={loading} className={styles.profileCard} hoverable>
-              <Row gutter={[16, 16]}>
-                <Col xs={24} sm={6} md={4} lg={3} xl={2}>
-                  <Avatar
-                    src={imageUrl}
-                    size={{
-                      xs: 64,
-                      md: 64,
-                      lg: 72,
-                      xl: 80,
+                {/* Right Panel */}
+                <div className={styles.rightPanel}>
+                  <Card
+                    hoverable
+                    style={{
+                      width: "100%",
+                      maxWidth: 280,
+                      margin: "0 auto",
+                      borderRadius: 12,
+                      boxShadow: "0 6px 20px rgba(0, 0, 0, 0.1)",
+                      transition: "transform 0.3s",
                     }}
-                    className={styles.profileAvatar}
-                  />
-                </Col>
-
-                <Col xs={24} sm={18} md={20} lg={21} xl={22}>
-                  <div className={styles.profileContent}>
-                    <h3 className={styles.profileTitle}>
-                      Hi {data.first_name}
-                    </h3>
-                    <p className={styles.profileBio}>
-                      {member_info?.short_bio || "No bio available"}
-                    </p>
-                  </div>
-                </Col>
-              </Row>
-            </Card>
-
-            <Switch
-              checked={!loading}
-              onChange={(checked) => setLoading(!checked)}
-              className={styles.toggleSwitch}
-              style={{ marginBottom: "20px" }}
-            />
-
-            {/* Personal Information Section */}
-            <div className={styles.sectionContainer}>
-              <Title level={4} className={styles.sectionTitle}>
-                Personal Information
-              </Title>
-
-              <Descriptions
-                layout="horizontal"
-                bordered={false}
-                column={{
-                  xs: 1, // Always 1 column on extra small devices
-                  sm: 1, // 1 column on small devices
-                  md: 2, // 2 columns on medium and larger
-                  lg: 2,
-                  xl: 2,
-                  xxl: 2,
-                }}
-                colon={false}
-                labelStyle={{
-                  fontWeight: 500,
-                  minWidth: "120px",
-                  wordBreak: "break-word",
-                  paddingBottom: "8px", // Added spacing for vertical layout
-                }}
-                contentStyle={{
-                  color: "#444",
-                  wordBreak: "break-word",
-                  paddingBottom: "16px", // Added spacing between items
-                }}
-              >
-                <Descriptions.Item label="Father's Name">
-                  {personal_info?.father_name || "Not Available"}
-                </Descriptions.Item>
-                <Descriptions.Item label="Mother's Name">
-                  {personal_info?.mother_name || "Not Available"}
-                </Descriptions.Item>
-                <Descriptions.Item label="Date of Birth">
-                  {personal_info?.dob || "Not Available"}
-                </Descriptions.Item>
-                <Descriptions.Item label="Gender">
-                  {personal_info?.gender
-                    ? personal_info.gender.charAt(0).toUpperCase() +
-                      personal_info.gender.slice(1)
-                    : "Not Available"}
-                </Descriptions.Item>
-                <Descriptions.Item label="Marital Status">
-                  {personal_info?.marital_status
-                    ? personal_info.marital_status.charAt(0).toUpperCase() +
-                      personal_info.marital_status.slice(1)
-                    : "Not Available"}
-                </Descriptions.Item>
-                <Descriptions.Item label="Nationality">
-                  {personal_info?.nationality || "Not Available"}
-                </Descriptions.Item>
-              </Descriptions>
+                    bodyStyle={{ padding: "12px 16px" }}
+                    cover={
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          padding: 16,
+                        }}
+                      >
+                        <Image
+                          alt={data?.name}
+                          src={imageUrl}
+                          width="100%"
+                          style={{
+                            maxWidth: 220,
+                            borderRadius: 12,
+                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                          }}
+                        />
+                      </div>
+                    }
+                  >
+                    <Meta
+                      title={data?.member_info?.appointment || "No appointment"}
+                      style={{ textAlign: "center" }}
+                    />
+                  </Card>
+                </div>
+              </div>
             </div>
+
+            <div className={styles.portfolioSection}>
+              <h3 className={styles.sectionHeader}>Personal Details</h3>
+
+              <div className={styles.detailsGrid}>
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Father Name</span>
+                  <span className={styles.detailValue}>
+                    {personal_info?.father_name || "—"}
+                  </span>
+                </div>
+
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Mother Name</span>
+                  <span className={styles.detailValue}>
+                    {personal_info?.mother_name || "—"}
+                  </span>
+                </div>
+
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Date of Birth</span>
+                  <span className={styles.detailValue}>
+                    {personal_info?.dob || "—"}
+                  </span>
+                </div>
+
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Gender</span>
+                  <span className={styles.detailValue}>
+                    {personal_info?.gender
+                      ? personal_info.gender.charAt(0).toUpperCase() +
+                        personal_info.gender.slice(1)
+                      : "—"}
+                  </span>
+                </div>
+
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Marital Status</span>
+                  <span className={styles.detailValue}>
+                    {personal_info?.marital_status
+                      ? personal_info.marital_status.charAt(0).toUpperCase() +
+                        personal_info.marital_status.slice(1)
+                      : "—"}
+                  </span>
+                </div>
+
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Nationality</span>
+                  <span className={styles.detailValue}>
+                    {personal_info?.nationality || "—"}
+                  </span>
+                </div>
+              </div>
+            </div>
+
             {/* Address Section */}
 
             {data && (

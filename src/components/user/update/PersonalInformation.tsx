@@ -138,7 +138,7 @@ const PersonalInformation = ({
             hoverable
             style={{
               borderRadius: "8px",
-              height: "100%",
+              height: "80%",
             }}
             bodyStyle={{ padding: "16px", textAlign: "center" }}
           >

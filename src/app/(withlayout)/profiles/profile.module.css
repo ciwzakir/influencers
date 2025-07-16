@@ -67,15 +67,6 @@
   height: auto;
 }
 
-.profileContent {
-  padding-left: 8px;
-}
-
-.profileTitle {
-  margin-bottom: 8px;
-  font-size: 18px;
-}
-
 .profileBio {
   text-align: left;
   word-wrap: break-word;
@@ -136,7 +127,6 @@
 }
 /* profile.module.css */
 .addressCard {
-  padding: 16px;
   background: #fff;
   border-radius: 6px;
   border: 1px solid #f0f0f0;
@@ -152,7 +142,6 @@
   border-color: #d9d9d9;
 }
 .addressText {
-  margin-top: 8px;
   margin-bottom: 0;
   color: #444;
 }
@@ -162,17 +151,130 @@
   color: #bfbfbf;
 }
 
-/* For medium devices and up */
 @media (min-width: 768px) {
   .descriptions:global(.ant-descriptions-vertical) {
     display: table;
   }
+}
 
-  .descriptions:global(.ant-descriptions-item-label) {
-    padding-bottom: 0;
+/* Base styles */
+.userInfo {
+  margin-bottom: 16px;
+}
+
+.userName {
+  font-size: 18px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.userMeta {
+  color: rgba(0, 0, 0, 0.45);
+  margin: 4px 0;
+}
+
+.contactContainer {
+  width: 100%;
+}
+
+/* Contact info - left on mobile, right on desktop */
+.contactInfo {
+  text-align: left; /* Mobile default */
+}
+
+@media (min-width: 768px) {
+  .contactInfo {
+    text-align: right; /* Desktop alignment */
+  }
+}
+
+.contactItem {
+  margin-left: 8px;
+}
+.profileTitle {
+  margin-top: 20px 0;
+}
+.profileSection {
+  margin: 40px 0;
+}
+.contents {
+  padding: 30px;
+  text-align: justify;
+}
+.imageSection {
+  padding: 30px;
+  text-align: center;
+}
+
+.splitterWrapper {
+  display: flex;
+  gap: 24px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  border-radius: 12px;
+  flex-direction: row;
+}
+
+.leftPanel {
+  flex: 3;
+}
+
+.rightPanel {
+  flex: 2;
+}
+
+@media (max-width: 768px) {
+  .splitterWrapper {
+    flex-direction: column;
+    padding: 12px;
   }
 
-  .descriptions:global(.ant-descriptions-item-content) {
-    padding-bottom: 0;
+  .leftPanel,
+  .rightPanel {
+    width: 100%;
   }
+}
+
+.portfolioSection {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 32px;
+}
+
+.sectionHeader {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.detailLabel {
+  font-size: 0.85rem;
+  color: #718096;
+  font-weight: 500;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detailValue {
+  font-size: 1rem;
+  color: #1a202c;
+  font-weight: 500;
+  line-height: 1.5;
 }

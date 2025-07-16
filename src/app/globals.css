@@ -5,9 +5,3 @@
   margin: 0;
   font-family: "Roboto Condensed", sans-serif;
 }
-
-@media (max-width: 767px) {
-  .contact-section {
-    text-align: left !important;
-  }
-}

@@ -362,7 +362,7 @@ const IncomeReportPage = () => {
   return (
     <Layout className="income-report-layout">
       <Content className="income-report-content">
-        <Card className="filter-card" style={{ padding: " 0 50px" }}>
+        <Card className="filter-card" style={{ padding: " 0 10px" }}>
           <Form form={form} onFinish={handleDateFilter} layout="inline">
             <Form.Item name="dateRange" label="Date Range">
               <RangePicker
@@ -383,7 +383,7 @@ const IncomeReportPage = () => {
               </Space>
             </Form.Item>
             {dateRange && (
-              <Text type="secondary" style={{ marginLeft: 16 }}>
+              <Text type="secondary" style={{ marginLeft: 10 }}>
                 Showing income from {dateRange[0].format("DD MMM YYYY")} to{" "}
                 {dateRange[1].format("DD MMM YYYY")}
               </Text>
@@ -441,7 +441,7 @@ const IncomeReportPage = () => {
         <Divider />
 
         <Card
-          style={{ padding: " 0 50px" }}
+          style={{ padding: " 0 10px" }}
           className="report-table-card"
           title="All Income Transactions"
           extra={
@@ -476,7 +476,7 @@ const IncomeReportPage = () => {
         <Divider />
 
         <Card
-          style={{ padding: " 0 50px" }}
+          style={{ padding: " 0 10px" }}
           className="report-table-card"
           title="Category-wise Summary"
           extra={

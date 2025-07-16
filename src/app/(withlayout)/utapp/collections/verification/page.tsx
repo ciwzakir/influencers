@@ -108,20 +108,7 @@ const CollectionsVerificationPage = () => {
       dataIndex: "entry_date",
       key: "entry_date",
     },
-    {
-      title: "Status",
-      key: "current_payment_status_display",
-      render: (record: any) => (
-        <Paragraph>{record.current_payment_status_display}</Paragraph>
-      ),
-    },
-    {
-      title: "Total Deposits",
-      key: "total_deposit_by_all",
-      render: (record: any) => (
-        <Paragraph>{record.total_deposit_by_all}</Paragraph>
-      ),
-    },
+
     {
       title: "Actions",
       align: "center" as const,

@@ -366,7 +366,7 @@ const ExpenseReportPage = () => {
   return (
     <Layout className="expense-report-layout">
       <Content className="expense-report-content">
-        <Card className="filter-card" style={{ padding: " 0 50px" }}>
+        <Card className="filter-card" style={{ padding: " 0 10px" }}>
           <Form form={form} onFinish={handleDateFilter} layout="inline">
             <Form.Item name="dateRange" label="Date Range">
               <RangePicker
@@ -446,7 +446,7 @@ const ExpenseReportPage = () => {
 
         {/* Expenses Table with Download Options */}
         <Card
-          style={{ padding: " 0 50px" }}
+          style={{ padding: " 0 10px" }}
           className="report-table-card"
           title="All Expense Transactions"
           extra={
@@ -478,7 +478,7 @@ const ExpenseReportPage = () => {
 
         {/* Categories Table with Download Options */}
         <Card
-          style={{ padding: " 0 50px" }}
+          style={{ padding: " 0 10px" }}
           className="report-table-card"
           title="Category-wise Summary"
           extra={

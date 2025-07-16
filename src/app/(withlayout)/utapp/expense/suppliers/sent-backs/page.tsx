@@ -1,39 +1,35 @@
 "use client";
 import React, { Suspense } from "react";
-import { Spin, Button, message, Row } from "antd";
-import {
-  useDeleteDraftBillMutation,
-  useOnlyDraftBillQuery,
-} from "@/redux/api/draftApi";
+import { Spin, Button, Row } from "antd";
+import {} from "@/redux/api/draftApi";
 import Link from "next/link";
-import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
-import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import RETable from "@/components/ui/RETable";
 import { getUserInfo } from "@/app/services/auth.service";
+import { useSentBackBillsQuery } from "@/redux/api/sent-backs";
 
 const userInfo = getUserInfo() as any;
 const role = userInfo?.user_role ?? "superuser";
 
-const DraftBillListPage = () => {
-  const [deleteDraftBill] = useDeleteDraftBillMutation();
-  const { data, isError, isLoading } = useOnlyDraftBillQuery(undefined);
-
+const SentBacksBillListPage = () => {
+  const { data, isError, isLoading } = useSentBackBillsQuery(undefined);
+  console.log(data);
   const pageCount = (): number => {
     return data?.length || 0;
   };
 
-  const deleteHandler = async (id: string) => {
-    message.loading("Deleting.....");
+  // const deleteHandler = async (id: string) => {
+  //   message.loading("Deleting.....");
 
-    try {
-      //   console.log(data);
-      await deleteDraftBill(id);
-      message.success("Bill Deleted successfully");
-    } catch (err: any) {
-      //   console.error(err.message);
-      message.error(err.message);
-    }
-  };
+  //   try {
+  //     //   console.log(data);
+  //     await deleteDraftBill(id);
+  //     message.success("Bill Deleted successfully");
+  //   } catch (err: any) {
+  //     //   console.error(err.message);
+  //     message.error(err.message);
+  //   }
+  // };
 
   const columns = [
     {
@@ -81,15 +77,15 @@ const DraftBillListPage = () => {
     //   },
     // },
 
-    // {
-    //   title: "Supplier",
-    //   dataIndex: "item_supplier",
-    //   render: function (data: any) {
-    //     if (data) {
-    //       return data.name;
-    //     } else return "No Supplier Found";
-    //   },
-    // },
+    {
+      title: "Supplier",
+      dataIndex: "item_supplier",
+      render: function (data: any) {
+        if (data) {
+          return data.name;
+        } else return "No Supplier Found";
+      },
+    },
     // {
     //   title: "Total Bill",
     //   dataIndex: "get_totals",
@@ -132,24 +128,24 @@ const DraftBillListPage = () => {
     //       );
     //   },
     // },
-    // {
-    //   title: "Published ?",
-    //   dataIndex: "is_published",
-    //   render: function (data: any) {
-    //     if (data === true) {
-    //       return (
-    //         <div className="" style={{ color: "green" }}>
-    //           Published
-    //         </div>
-    //       );
-    //     } else
-    //       return (
-    //         <div className="" style={{ color: "red" }}>
-    //           Draft
-    //         </div>
-    //       );
-    //   },
-    // },
+    {
+      title: "Published ?",
+      dataIndex: "is_published",
+      render: function (data: any) {
+        if (data === true) {
+          return (
+            <div className="" style={{ color: "green" }}>
+              Published
+            </div>
+          );
+        } else
+          return (
+            <div className="" style={{ color: "red" }}>
+              Draft
+            </div>
+          );
+      },
+    },
     {
       title: "Current Status",
       dataIndex: "bills_status",
@@ -186,17 +182,17 @@ const DraftBillListPage = () => {
                 ghost
                 style={{ marginRight: "10px" }}
               >
-                <EditOutlined /> Update
+                <EditOutlined /> Edit
               </Button>
             </Link>
 
-            <Button
+            {/* <Button
               danger
               onClick={() => deleteHandler(data?.id)}
               style={{ marginRight: "10px" }}
             >
               <DeleteOutlined /> Delete
-            </Button>
+            </Button> */}
           </div>
         );
       },
@@ -209,29 +205,11 @@ const DraftBillListPage = () => {
 
   return (
     <>
-      <div className="main" style={{ margin: "10px" }}>
-        <div className="bread-cumb">
-          <Suspense fallback={<Spin />}>
-            <UMBreadCrumb
-              items={[
-                {
-                  label: "Sent Backs",
-                  link: `/${role}/expense/suppliers/sent-backs`,
-                },
-
-                {
-                  label: "Get Return as per Codes",
-                  link: `/${role}/expense/codes`,
-                },
-              ]}
-            />
-          </Suspense>
-        </div>
-
+      <div className="main" style={{ margin: "20px" }}>
         <Row>
           <div className="content-section">
             <h2 style={{ margin: "20px", textAlign: "center" }}>
-              Draft Bill List
+              Sent Backs Bill List
             </h2>
             <Suspense fallback={<Spin />}>
               <RETable
@@ -254,4 +232,4 @@ const DraftBillListPage = () => {
   );
 };
 
-export default DraftBillListPage;
+export default SentBacksBillListPage;

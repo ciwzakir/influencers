@@ -1,9 +1,11 @@
 "use client";
 
-import { Col, Row, message, Spin, Layout } from "antd";
+import { Row, message, Spin, Layout } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import dayjs from "dayjs";
+import styles from "./proedit.module.css";
+import "./proedit.module.css";
 
 import { getUserInfo } from "@/app/services/auth.service";
 import {
@@ -170,30 +172,19 @@ const EditProfilePage = () => {
   }
 
   return (
-    <div className="main">
-      <Layout style={{ minHeight: "100vh" }}>
-        <Content
-          style={{
-            padding: "24px 16px",
-            maxWidth: "1200px",
-            margin: "0 auto",
-            width: "100%",
-          }}
-        >
-          <Row justify="center" align="middle">
-            <Col span={24}>
-              <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
-                Update Profile
-              </h1>
-              <StepperForm
-                steps={steps}
-                submitHandler={handleProfileUpdateSubmit}
-                defaultValues={myProfileDefaultValues}
-                persistKey="editProfilePersistKey"
-                validationSchema={updateProfileSchema}
-              />
-            </Col>
-          </Row>
+    <div className={styles.container}>
+      <Layout style={{ background: "transparent" }}>
+        <Content style={{ maxWidth: "900px", margin: "0 auto", width: "100%" }}>
+          <div className={styles.formCard}>
+            <h1 className={styles.heading}>Update Profile</h1>
+            <StepperForm
+              steps={steps}
+              submitHandler={handleProfileUpdateSubmit}
+              defaultValues={myProfileDefaultValues}
+              persistKey="editProfilePersistKey"
+              validationSchema={updateProfileSchema}
+            />
+          </div>
         </Content>
       </Layout>
     </div>

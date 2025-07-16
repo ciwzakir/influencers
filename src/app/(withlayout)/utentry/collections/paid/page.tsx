@@ -1,7 +1,16 @@
 "use client";
 import React, { useEffect, Suspense } from "react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { Layout, Image, message, Button, Typography } from "antd";
+import {
+  Layout,
+  Image,
+  message,
+  Button,
+  Typography,
+  Row,
+  Col,
+  Space,
+} from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
@@ -48,7 +57,6 @@ const PaidCollectionsPage = () => {
       receivable_month: item.receivable_month?.name || "",
     }));
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isFetchBaseQueryError = (error: any): error is FetchBaseQueryError => {
     return error && typeof error.status === "number";
   };
@@ -60,48 +68,44 @@ const PaidCollectionsPage = () => {
     }
   }, [error, router]);
 
-  if (isLoading) {
-    return <p>Loading profile...</p>;
-  }
-
-  if (error) {
-    return <p>Failed to load profile. Please try again later.</p>;
-  }
-
-  if (!data) {
-    return <p>No profile data found.</p>;
-  }
+  if (isLoading) return <p>Loading profile...</p>;
+  if (error) return <p>Failed to load profile. Please try again later.</p>;
+  if (!data) return <p>No profile data found.</p>;
 
   const columns = [
     {
       title: "Image",
       dataIndex: "payment_image",
+      responsive: ["md"],
       render: (data: any) => {
         if (data) {
           return <Image src={data} width={40} height={"40px"} alt="image" />;
-        } else return "No Image Found";
+        }
+        return "No Image";
       },
     },
-
     {
       title: "Received From",
       key: "received_from",
+      responsive: ["sm"],
       render: (record: any) => (
-        <Paragraph>{record.received_from?.email || "N/A"}</Paragraph>
+        <Paragraph ellipsis={{ tooltip: record.received_from?.email }}>
+          {record.received_from?.email || "N/A"}
+        </Paragraph>
       ),
       sorter: (a: any, b: any) =>
         (a.received_from?.email || "")
           .toLowerCase()
           .localeCompare((b.received_from?.email || "").toLowerCase()),
-      sortDirections: ["ascend", "descend"],
     },
-
     {
       title: "Deposit To",
       key: "deposit_to",
-      render: (record: any) => <p>{record.deposit_to?.bank_name}</p>,
+      responsive: ["md"],
+      render: (record: any) => (
+        <Paragraph ellipsis>{record.deposit_to?.bank_name || "N/A"}</Paragraph>
+      ),
     },
-
     {
       title: "Amount",
       key: "amount",
@@ -111,99 +115,103 @@ const PaidCollectionsPage = () => {
       title: "Paid on",
       dataIndex: "entry_date",
       key: "entry_date",
+      responsive: ["md"],
     },
     {
-      title: "Payment Status",
+      title: "Status",
       key: "current_payment_status",
+      responsive: ["sm"],
       render: (record: any) => <p>{record.current_payment_status_display}</p>,
     },
     {
-      title: "Your Total Deposits",
+      title: "Your Deposits",
       key: "total_paid_by_user",
+      responsive: ["lg"],
       render: (record: any) => <p>{record.total_paid_by_user}</p>,
       sorter: (a: any, b: any) =>
         parseFloat(a.total_paid_by_user) - parseFloat(b.total_paid_by_user),
-      sortDirections: ["ascend", "descend"],
     },
-
     {
       title: "Actions",
-      render: (data: any) => {
-        return (
-          <div className="action-div">
-            <Link href={`/${user_role}/collections/paid/${data.id}`}>
-              <Button type="primary" ghost style={{ marginRight: "10px" }}>
-                <EyeOutlined /> View
-              </Button>
-            </Link>
-          </div>
-        );
-      },
+      key: "actions",
+      render: (data: any) => (
+        <Link href={`/${user_role}/collections/paid/${data.id}`}>
+          <Button type="primary" ghost size="small">
+            <EyeOutlined /> View
+          </Button>
+        </Link>
+      ),
     },
   ];
 
   return (
-    <Suspense fallback={<p>Loading profile...</p>}>
-      <div className="main-div">
-        <div className="bread-cumb">
-          <UMBreadCrumb
-            items={[
-              {
-                label: "Dues",
-                link: `/${user_role}/collections/dues`,
-              },
-              {
-                label: "Outstanding",
-                link: `/${user_role}/collections/verification`,
-              },
-            ]}
-          />
-        </div>
-
-        <Layout
-          ref={targetRef}
-          style={{ background: "#f0f2f5", padding: "20px" }}
-        >
-          <Content
-            style={{
-              maxWidth: "1400px",
-              background: "#fff",
-              padding: "20px",
-              borderRadius: "10px",
-            }}
-          >
-            <RETable
-              loading={false}
-              columns={columns}
-              dataSource={filteredData}
-              pageSize={10}
-              total={totalDataLength()}
-              showSizeChanger={false}
-              // onChangeOfPagintion={onPaginationChange}
-              // onChangeTable={onTableChange}
-              // showPagination={true}
+    <Suspense fallback={<p>Loading...</p>}>
+      <div style={{ padding: "16px" }}>
+        <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <UMBreadCrumb
+              items={[
+                { label: "Dues", link: `/${user_role}/collections/dues` },
+                {
+                  label: "Outstanding",
+                  link: `/${user_role}/collections/verification`,
+                },
+              ]}
             />
-          </Content>
-        </Layout>
-        <div style={{ textAlign: "right", paddingRight: "100px" }}>
-          <Button
-            type="primary"
-            ghost
-            onClick={() => toPDF()}
-            style={{ marginRight: "10px" }}
-          >
-            Download PDF
-          </Button>
-          <CSVLink
-            data={flattenData(filteredData)}
-            filename="Paid Table.csv"
-            onClick={() => message.success("The file is downloading")}
-          >
-            <Button type="primary" ghost>
-              Download Excel
-            </Button>
-          </CSVLink>
-        </div>
+          </Col>
+
+          <Col span={24}>
+            <Layout ref={targetRef} style={{ background: "transparent" }}>
+              <Content
+                style={{
+                  width: "100%",
+                  background: "#fff",
+                  padding: "16px",
+                  borderRadius: "8px",
+                  boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                }}
+              >
+                <RETable
+                  loading={isLoading}
+                  columns={columns}
+                  dataSource={filteredData}
+                  pageSize={10}
+                  total={totalDataLength()}
+                  showSizeChanger={false}
+                />
+              </Content>
+            </Layout>
+          </Col>
+
+          <Col span={24}>
+            <Space
+              direction={window.innerWidth < 768 ? "vertical" : "horizontal"}
+              style={{
+                width: "100%",
+                justifyContent: window.innerWidth < 768 ? "center" : "flex-end",
+                padding: "16px 0",
+              }}
+            >
+              <Button
+                type="primary"
+                ghost
+                onClick={() => toPDF()}
+                style={{ marginRight: window.innerWidth < 768 ? 0 : "10px" }}
+              >
+                Download PDF
+              </Button>
+              <CSVLink
+                data={flattenData(filteredData)}
+                filename="Paid_Collections.csv"
+                onClick={() => message.success("Downloading CSV file")}
+              >
+                <Button type="primary" ghost>
+                  Download Excel
+                </Button>
+              </CSVLink>
+            </Space>
+          </Col>
+        </Row>
       </div>
     </Suspense>
   );

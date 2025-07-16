@@ -184,7 +184,10 @@ const DuesCollectionsPage = () => {
   if (!filteredData.length) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <p>No dues data found.</p>
+        <h1 style={{ margin: "50px", textAlign: "center" }}>
+          <span style={{ color: "black" }}> NO DATA</span>{" "}
+          <span style={{ color: "#6495ed" }}> FOUND</span>
+        </h1>
       </div>
     );
   }
