@@ -32,6 +32,20 @@ export const sidebarItems = (role: string): MenuProps["items"] => {
       ],
     },
   ];
+  const usersSidebarItems: MenuProps["items"] = [
+    {
+      label: "Users",
+      key: "users",
+      icon: <UserAddOutlined />,
+      children: [
+        {
+          label: <Link href={`/users`}>All Members</Link>,
+          icon: <TableOutlined />,
+          key: `users`,
+        },
+      ],
+    },
+  ];
 
   const adminSidebarItems: MenuProps["items"] = [
     ...defaultSidebarItems,
@@ -177,6 +191,7 @@ export const sidebarItems = (role: string): MenuProps["items"] => {
   ];
   const uttoronApprovalIUserSidebarItems: MenuProps["items"] = [
     ...defaultSidebarItems,
+    ...usersSidebarItems,
     {
       label: "Subscriptions",
       key: "collections",
@@ -258,6 +273,7 @@ export const sidebarItems = (role: string): MenuProps["items"] => {
 
   const uttoronEntryIUserSidebarItems: MenuProps["items"] = [
     ...defaultSidebarItems,
+    ...usersSidebarItems,
     {
       label: "Subscriptions",
       key: "collections",
