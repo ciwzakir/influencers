@@ -33,36 +33,36 @@ export const marriedOptions = [
 export const bloodGroupOptions = [
   {
     label: "A+ (Positive)",
-    value: "a+(Positive)",
+    value: "A+",
   },
   {
     label: "A- (Negative)",
-    value: "a-(Negative)",
+    value: "A-",
   },
   {
     label: "B+ (Positive)",
-    value: "b+(Positive)",
+    value: "B+",
   },
   {
     label: "B- (Negative)",
-    value: "b-(Negative)",
+    value: "B-",
   },
   {
     label: "AB+ (Positive)",
-    value: "ab+(Positive)",
+    value: "AB+",
   },
   {
     label: "AB- (Negative)",
-    value: "ab-(Negative)",
+    value: "AB-",
   },
 
   {
     label: "O+ (Positive)",
-    value: "o+(Positive)",
+    value: "O+",
   },
   {
     label: "O- (Negative)",
-    value: "o-(Negative)",
+    value: "O-",
   },
 ];
 

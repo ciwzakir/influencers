@@ -142,14 +142,14 @@ const EditProfilePage = () => {
         transformedValues.personal_info
       );
 
-      // Append qualifications
-      transformedValues.qualifications.forEach((qual: any, index: number) => {
-        for (const [key, value] of Object.entries(qual)) {
-          if (value !== undefined && value !== null) {
-            formData.append(`qualifications[${index}][${key}]`, String(value));
-          }
-        }
-      });
+      // // Append qualifications
+      // transformedValues.qualifications.forEach((qual: any, index: number) => {
+      //   for (const [key, value] of Object.entries(qual)) {
+      //     if (value !== undefined && value !== null) {
+      //       formData.append(`qualifications[${index}][${key}]`, String(value));
+      //     }
+      //   }
+      // });
 
       // Submit using FormData
       await updateProfile({ id, data: formData }).unwrap();
