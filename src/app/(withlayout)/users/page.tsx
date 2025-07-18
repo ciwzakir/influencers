@@ -129,7 +129,7 @@ const UsersPage: React.FC = () => {
                     loading={false}
                     columns={columns}
                     dataSource={data}
-                    pageSize={5}
+                    pageSize={4}
                     total={totalDataLength()}
                     showSizeChanger={false}
                     onChangeOfPagintion={onPaginationChange}

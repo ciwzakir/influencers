@@ -5,7 +5,6 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Layout, Image, message, Button, Typography, Grid } from "antd";
 import { BackwardOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import Link from "next/link";
-import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import { useRouter } from "next/navigation";
 import { getUserInfo } from "@/app/services/auth.service";
 import { useCollectionsQuery } from "@/redux/api/uttoronapi/colletionsApi";
@@ -137,15 +136,6 @@ const CollectionsVerificationPage = () => {
   return (
     <Suspense fallback={<p>Loading profile...</p>}>
       <div style={{ padding: "16px" }}>
-        <div style={{ marginBottom: "16px" }}>
-          <UMBreadCrumb
-            items={[
-              { label: "Dues", link: `/${role}/collections/dues` },
-              { label: "Paid", link: `/${role}/collections/paid` },
-            ]}
-          />
-        </div>
-
         <Layout
           ref={targetRef}
           style={{ background: "#f0f2f5", padding: "16px" }}

@@ -146,8 +146,8 @@ const PaidCollectionsPage = () => {
 
   return (
     <Suspense fallback={<p>Loading...</p>}>
-      <div style={{ padding: "16px" }}>
-        <Row gutter={[16, 16]}>
+      <div className="">
+        <Row>
           <Col span={24}>
             <UMBreadCrumb
               items={[
@@ -159,7 +159,10 @@ const PaidCollectionsPage = () => {
               ]}
             />
           </Col>
-
+        </Row>
+      </div>
+      <div style={{ padding: "16px" }}>
+        <Row gutter={[16, 16]}>
           <Col span={24}>
             <Layout ref={targetRef} style={{ background: "transparent" }}>
               <Content

@@ -173,14 +173,16 @@ const AllCashBookPage = () => {
     >
       <Content className="min-h-screen flex flex-col">
         <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <UMBreadCrumb
-            items={[
-              {
-                label: "Cash Book",
-                link: `/${user_role}/cashbook`,
-              },
-            ]}
-          />
+          <div className="">
+            <UMBreadCrumb
+              items={[
+                {
+                  label: "Cash Book",
+                  link: `/${user_role}/cashbook`,
+                },
+              ]}
+            />
+          </div>
 
           <h2 className="text-2xl font-semibold text-center my-6">
             All Cash Book Entries

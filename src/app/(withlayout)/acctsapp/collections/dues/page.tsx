@@ -200,21 +200,22 @@ const DuesCollectionsPage = () => {
         </div>
       }
     >
+      <div className="">
+        <UMBreadCrumb
+          items={[
+            {
+              label: "Outstanding",
+              link: `/${user_role}/collections/verification`,
+            },
+            {
+              label: "Paid",
+              link: `/${user_role}/collections/paid`,
+            },
+          ]}
+        />
+      </div>
       <Content className="min-h-screen flex flex-col">
         <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <UMBreadCrumb
-            items={[
-              {
-                label: "Outstanding",
-                link: `/${user_role}/collections/verification`,
-              },
-              {
-                label: "Paid",
-                link: `/${user_role}/collections/paid`,
-              },
-            ]}
-          />
-
           <div ref={targetRef} className="bg-white rounded-lg shadow p-6">
             <h2 className="text-2xl font-semibold text-center my-6">
               Dues List
