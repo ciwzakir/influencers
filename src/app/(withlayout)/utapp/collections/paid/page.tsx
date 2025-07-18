@@ -21,6 +21,7 @@ import { CSVLink } from "react-csv";
 import { usePDF } from "react-to-pdf";
 import RETable from "@/components/ui/RETable";
 const { Paragraph } = Typography;
+const { Text } = Typography;
 const { Content } = Layout;
 
 const PaidCollectionsPage = () => {
@@ -32,6 +33,8 @@ const PaidCollectionsPage = () => {
     {},
     { refetchOnMountOrArgChange: true }
   );
+
+  const total_paid_by_user = data?.[data.length - 1]?.total_paid_by_user;
 
   const filteredData = Array.isArray(data)
     ? data.filter((item) => item.current_payment_status === "paid")
@@ -123,14 +126,7 @@ const PaidCollectionsPage = () => {
       responsive: ["sm"],
       render: (record: any) => <p>{record.current_payment_status_display}</p>,
     },
-    {
-      title: "Your Deposits",
-      key: "total_paid_by_user",
-      responsive: ["lg"],
-      render: (record: any) => <p>{record.total_paid_by_user}</p>,
-      sorter: (a: any, b: any) =>
-        parseFloat(a.total_paid_by_user) - parseFloat(b.total_paid_by_user),
-    },
+
     {
       title: "Actions",
       key: "actions",
@@ -147,7 +143,7 @@ const PaidCollectionsPage = () => {
   return (
     <Suspense fallback={<p>Loading...</p>}>
       <div style={{ padding: "16px" }}>
-        <Row gutter={[16, 16]}>
+        <Row>
           <Col span={24}>
             <UMBreadCrumb
               items={[
@@ -159,7 +155,8 @@ const PaidCollectionsPage = () => {
               ]}
             />
           </Col>
-
+        </Row>
+        <Row gutter={[16, 16]}>
           <Col span={24}>
             <Layout ref={targetRef} style={{ background: "transparent" }}>
               <Content
@@ -179,10 +176,21 @@ const PaidCollectionsPage = () => {
                   total={totalDataLength()}
                   showSizeChanger={false}
                 />
+
+                <Col>
+                  <Text strong style={{ fontSize: "16px" }}>
+                    Your Total Deposit Amount:{" "}
+                    <Text type="success">
+                      {parseFloat(total_paid_by_user).toFixed(2)}
+                    </Text>
+                  </Text>
+                </Col>
               </Content>
             </Layout>
           </Col>
+        </Row>
 
+        <Row>
           <Col span={24}>
             <Space
               direction={window.innerWidth < 768 ? "vertical" : "horizontal"}

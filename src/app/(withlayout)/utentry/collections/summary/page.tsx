@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Suspense } from "react";
-import { Layout, message, Button, Typography } from "antd";
+import { Layout, message, Button, Typography, Row, Col } from "antd";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import { getUserInfo } from "@/app/services/auth.service";
 import { CSVLink } from "react-csv";
@@ -127,24 +127,32 @@ const CollectionsSummary = () => {
         a.email.toLowerCase().localeCompare(b.email.toLowerCase()),
       sortDirections: ["ascend", "descend"],
     },
+
     {
       title: "Due",
       key: "due",
       dataIndex: "due",
-      render: (value: number) => <p>{value.toFixed(2)}</p>,
+      render: (value: number) => (
+        <Typography.Text type="danger">{value.toFixed(2)}</Typography.Text>
+      ),
     },
     {
       title: "Paid",
       key: "paid",
       dataIndex: "paid",
-      render: (value: number) => <p>{value.toFixed(2)}</p>,
+      render: (value: number) => (
+        <Typography.Text type="success">{value.toFixed(2)}</Typography.Text>
+      ),
     },
     {
       title: "Verification",
       key: "verification",
       dataIndex: "verification",
-      render: (value: number) => <p>{value.toFixed(2)}</p>,
+      render: (value: number) => (
+        <Typography.Text type="warning">{value.toFixed(2)}</Typography.Text>
+      ),
     },
+
     {
       title: "Total",
       key: "total",
@@ -155,14 +163,12 @@ const CollectionsSummary = () => {
 
   return (
     <Suspense fallback={<p>Loading profile...</p>}>
-      <div className="main-div">
-        <div className="bread-cumb">
+      <div className="main-div" style={{ padding: "10px" }}>
+        {/* Breadcrumb */}
+        <div className="bread-cumb" style={{ marginBottom: "16px" }}>
           <UMBreadCrumb
             items={[
-              {
-                label: "Dues",
-                link: `/${user_role}/collections/dues`,
-              },
+              { label: "Dues", link: `/${user_role}/collections/dues` },
               {
                 label: "Outstanding",
                 link: `/${user_role}/collections/verification`,
@@ -173,57 +179,77 @@ const CollectionsSummary = () => {
 
         <Layout
           ref={targetRef}
-          style={{ background: "#f0f2f5", padding: "20px" }}
+          style={{ background: "#f0f2f5", padding: "10px" }}
         >
           <Content
             style={{
-              maxWidth: "1400px",
+              maxWidth: "100%",
               background: "#fff",
-              padding: "20px",
+              padding: "16px",
               borderRadius: "10px",
             }}
           >
-            {/* Chart */}
-            <div style={{ marginBottom: "40px" }}>
+            {/* Chart Section */}
+            <div style={{ marginBottom: "24px", overflowX: "auto" }}>
               <Bar data={chartData} options={chartOptions} />
             </div>
 
-            <h1 style={{ margin: "50px", textAlign: "center" }}>
-              <span style={{ color: "black" }}> COLLECTION </span>{" "}
+            {/* Title */}
+            <h1
+              style={{
+                margin: "24px 0",
+                textAlign: "center",
+                fontSize: "20px",
+                lineHeight: "1.4",
+              }}
+            >
+              <span style={{ color: "black" }}> COLLECTION </span>
               <span style={{ color: "#6495ed" }}> SUMMARIES</span>
             </h1>
 
             {/* Table */}
-            <RETable
-              loading={false}
-              columns={columns}
-              dataSource={emailSummaries}
-              pageSize={15}
-              total={emailSummaries.length}
-              showSizeChanger={false}
-            />
+            <div style={{ overflowX: "auto" }}>
+              <RETable
+                loading={false}
+                columns={columns}
+                dataSource={emailSummaries}
+                pageSize={15}
+                total={emailSummaries.length}
+                showSizeChanger={false}
+              />
+            </div>
           </Content>
         </Layout>
 
-        <div style={{ textAlign: "right", paddingRight: "100px" }}>
-          <Button
-            type="primary"
-            ghost
-            onClick={() => toPDF()}
-            style={{ marginRight: "10px" }}
-          >
-            Download PDF
-          </Button>
-          <CSVLink
-            data={emailSummaries}
-            filename="User_Payment_Summary.csv"
-            onClick={() => message.success("The file is downloading")}
-          >
-            <Button type="primary" ghost>
-              Download Excel
+        {/* Buttons: PDF and CSV */}
+        <Row
+          gutter={[16, 16]}
+          justify="end"
+          style={{ marginTop: "24px", flexWrap: "wrap" }}
+        >
+          <Col xs={24} sm={12} md={8} style={{ textAlign: "center" }}>
+            <Button
+              type="primary"
+              ghost
+              onClick={() => toPDF()}
+              style={{ width: "100%" }}
+            >
+              Download PDF
             </Button>
-          </CSVLink>
-        </div>
+          </Col>
+          <Col xs={24} sm={12} md={8} style={{ textAlign: "center" }}>
+            <CSVLink
+              data={emailSummaries}
+              filename="User_Payment_Summary.csv"
+              onClick={() => message.success("The file is downloading")}
+              style={{ display: "block", width: "100%" }}
+            >
+              <Button type="primary" ghost style={{ width: "100%" }}>
+                Download Excel
+              </Button>
+            </CSVLink>
+          </Col>
+        </Row>
       </div>
     </Suspense>
   );

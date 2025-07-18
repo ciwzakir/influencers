@@ -131,19 +131,25 @@ const CollectionsSummary = () => {
       title: "Due",
       key: "due",
       dataIndex: "due",
-      render: (value: number) => <p>{value.toFixed(2)}</p>,
+      render: (value: number) => (
+        <Typography.Text type="danger">{value.toFixed(2)}</Typography.Text>
+      ),
     },
     {
       title: "Paid",
       key: "paid",
       dataIndex: "paid",
-      render: (value: number) => <p>{value.toFixed(2)}</p>,
+      render: (value: number) => (
+        <Typography.Text type="success">{value.toFixed(2)}</Typography.Text>
+      ),
     },
     {
       title: "Verification",
       key: "verification",
       dataIndex: "verification",
-      render: (value: number) => <p>{value.toFixed(2)}</p>,
+      render: (value: number) => (
+        <Typography.Text type="warning">{value.toFixed(2)}</Typography.Text>
+      ),
     },
     {
       title: "Total",
