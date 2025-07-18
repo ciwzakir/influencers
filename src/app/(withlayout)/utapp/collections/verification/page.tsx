@@ -86,6 +86,11 @@ const CollectionsVerificationPage = () => {
         ),
     },
     {
+      title: "Month",
+      key: "title",
+      render: (record: any) => <p>{record.title}</p>,
+    },
+    {
       title: "Received From",
       key: "received_from",
       render: (record: any) => (

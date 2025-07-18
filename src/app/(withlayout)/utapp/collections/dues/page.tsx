@@ -94,12 +94,10 @@ const DuesCollectionsPage = () => {
   const columns = [
     {
       title: "For Month",
-      key: "receivable_month",
+      key: "title",
       align: "center" as const,
       render: (record: any) => (
-        <div className="text-center">
-          {record.receivable_month?.contribution_month?.title}
-        </div>
+        <div className="text-center">{record.title}</div>
       ),
     },
     {

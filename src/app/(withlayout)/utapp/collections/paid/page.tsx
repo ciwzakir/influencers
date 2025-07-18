@@ -91,7 +91,7 @@ const PaidCollectionsPage = () => {
     {
       title: "Month",
       key: "title",
-      render: (record: any) => <p>${record.title}</p>,
+      render: (record: any) => <p>{record.title}</p>,
     },
     {
       title: "Amount",
