@@ -86,9 +86,15 @@ const CollectionsVerificationPage = () => {
         ),
     },
     {
-      title: "Month",
-      key: "title",
-      render: (record: any) => <p>{record.title}</p>,
+      title: "For Month",
+      key: "receivable_month",
+      align: "center" as const,
+      render: (record: any) => (
+        <div className="text-center">
+          {record.receivable_month?.contribution_month?.name} {"|| "}
+          {record.receivable_month?.fiscal_year?.name}
+        </div>
+      ),
     },
     {
       title: "Received From",
