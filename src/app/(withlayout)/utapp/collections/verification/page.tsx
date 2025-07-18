@@ -105,8 +105,8 @@ const CollectionsVerificationPage = () => {
     },
     {
       title: "Paid on",
-      dataIndex: "entry_date",
-      key: "entry_date",
+      dataIndex: "transaction_date",
+      key: "transaction_date",
     },
 
     {

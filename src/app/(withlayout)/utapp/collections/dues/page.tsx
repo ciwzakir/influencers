@@ -98,7 +98,7 @@ const DuesCollectionsPage = () => {
       align: "center" as const,
       render: (record: any) => (
         <div className="text-center">
-          {record.receivable_month?.contribution_month?.name}
+          {record.receivable_month?.contribution_month?.title}
         </div>
       ),
     },

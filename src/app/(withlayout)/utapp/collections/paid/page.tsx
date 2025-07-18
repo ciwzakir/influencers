@@ -20,7 +20,7 @@ import { useCollectionsQuery } from "@/redux/api/uttoronapi/colletionsApi";
 import { CSVLink } from "react-csv";
 import { usePDF } from "react-to-pdf";
 import RETable from "@/components/ui/RETable";
-const { Paragraph } = Typography;
+
 const { Text } = Typography;
 const { Content } = Layout;
 
@@ -87,27 +87,11 @@ const PaidCollectionsPage = () => {
         return "No Image";
       },
     },
+
     {
-      title: "Received From",
-      key: "received_from",
-      responsive: ["sm"],
-      render: (record: any) => (
-        <Paragraph ellipsis={{ tooltip: record.received_from?.email }}>
-          {record.received_from?.email || "N/A"}
-        </Paragraph>
-      ),
-      sorter: (a: any, b: any) =>
-        (a.received_from?.email || "")
-          .toLowerCase()
-          .localeCompare((b.received_from?.email || "").toLowerCase()),
-    },
-    {
-      title: "Deposit To",
-      key: "deposit_to",
-      responsive: ["md"],
-      render: (record: any) => (
-        <Paragraph ellipsis>{record.deposit_to?.bank_name || "N/A"}</Paragraph>
-      ),
+      title: "Month",
+      key: "title",
+      render: (record: any) => <p>${record.title}</p>,
     },
     {
       title: "Amount",
