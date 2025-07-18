@@ -19,6 +19,7 @@ import RETable from "@/components/ui/RETable";
 const UsersPage: React.FC = () => {
   const { data } = useAllUsersQuery(undefined);
   const [loading, setLoading] = useState<boolean>(true);
+  const totalDataLength = () => data?.length || 0;
 
   const columns = [
     {
@@ -129,7 +130,7 @@ const UsersPage: React.FC = () => {
                     columns={columns}
                     dataSource={data}
                     pageSize={5}
-                    total={15}
+                    total={totalDataLength()}
                     showSizeChanger={false}
                     onChangeOfPagintion={onPaginationChange}
                     onChangeTable={onTableChange}
