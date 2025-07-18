@@ -9,6 +9,7 @@ const { Sider } = Layout;
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const { user_role } = getUserInfo() as any;
+  // console.log("user_role", user_role);
 
   return (
     <Sider
@@ -23,6 +24,7 @@ const SideBar = () => {
         left: 0,
         top: 0,
         bottom: 0,
+        background: "#001529", // Force sider background
       }}
     >
       <div
@@ -32,9 +34,10 @@ const SideBar = () => {
           textAlign: "center",
           fontWeight: "bold",
           marginBottom: "1rem",
+          background: "#001529", // Match menu background
         }}
       >
-        {/* Dashboard */}
+        Dashboard
       </div>
       <Menu
         theme="dark"
