@@ -84,18 +84,6 @@ const CollectionsVerificationPage = () => {
           "No Image"
         ),
     },
-    {
-      title: "Received From",
-      key: "received_from",
-      render: (record: any) => (
-        <Paragraph>{record.received_from?.email || "N/A"}</Paragraph>
-      ),
-      sorter: (a: any, b: any) =>
-        (a.received_from?.email || "")
-          .toLowerCase()
-          .localeCompare((b.received_from?.email || "").toLowerCase()),
-      sortDirections: ["ascend", "descend"],
-    },
 
     {
       title: "Amount",
@@ -104,8 +92,8 @@ const CollectionsVerificationPage = () => {
     },
     {
       title: "Paid on",
-      dataIndex: "entry_date",
-      key: "entry_date",
+      dataIndex: "transaction_date",
+      key: "transaction_date",
     },
 
     {
