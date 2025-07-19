@@ -2,8 +2,8 @@ import React from "react";
 
 const CreateSubscriptionRates = () => {
   return (
-    <div style={{ margin: "50px" }}>
-      <h1> Contract to administrator </h1>
+    <div style={{ padding: "30px", textAlign: "center" }}>
+      <h3> Contract to Administrator </h3>
     </div>
   );
 };

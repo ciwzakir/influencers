@@ -8,11 +8,12 @@ import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import { getUserInfo } from "@/app/services/auth.service";
 import { CSVLink } from "react-csv";
 import { usePDF } from "react-to-pdf";
-import RETable from "@/components/ui/RETable";
 import {
   useDeleteSingleMonthlyRatesMutation,
   useMonthlyContributeRatesQuery,
 } from "@/redux/api/uttoronapi/contribution-rates";
+import RETUTTable from "@/components/ui/UTTable";
+import { ColumnsType } from "antd/es/table";
 
 const { Content } = Layout;
 
@@ -63,7 +64,7 @@ const ContributionsPage = () => {
     setIdToDelete(null);
   };
 
-  const columns = [
+  const columns: ColumnsType<any> = [
     {
       title: "Name of Month",
       key: "name",
@@ -165,13 +166,14 @@ const ContributionsPage = () => {
 
             {/* Responsive table wrapper */}
             <div className="overflow-x-auto">
-              <RETable
+              <RETUTTable
                 loading={false}
                 columns={columns}
                 dataSource={data}
                 pageSize={14}
                 total={totalDataLength()}
                 showSizeChanger={false}
+                scroll={{ x: "max-content" }}
               />
             </div>
           </div>

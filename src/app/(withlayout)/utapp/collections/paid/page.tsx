@@ -10,6 +10,7 @@ import {
   Row,
   Col,
   Space,
+  Divider,
 } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import Link from "next/link";
@@ -19,7 +20,8 @@ import { getUserInfo } from "@/app/services/auth.service";
 import { useCollectionsQuery } from "@/redux/api/uttoronapi/colletionsApi";
 import { CSVLink } from "react-csv";
 import { usePDF } from "react-to-pdf";
-import RETable from "@/components/ui/RETable";
+import RETUTTable from "@/components/ui/UTTable";
+import { ColumnsType } from "antd/es/table";
 
 const { Text } = Typography;
 const { Content } = Layout;
@@ -75,8 +77,8 @@ const PaidCollectionsPage = () => {
   if (isLoading) return <p>Loading profile...</p>;
   if (error) return <p>Failed to load profile. Please try again later.</p>;
   if (!data) return <p>No profile data found.</p>;
-  console.log(data);
-  const columns = [
+  // console.log(data);
+  const columns: ColumnsType<any> = [
     {
       title: "Image",
       dataIndex: "payment_image",
@@ -140,13 +142,14 @@ const PaidCollectionsPage = () => {
               items={[
                 { label: "Dues", link: `/${user_role}/collections/dues` },
                 {
-                  label: "Outstanding",
+                  label: "Under verification",
                   link: `/${user_role}/collections/verification`,
                 },
               ]}
             />
           </Col>
         </Row>
+        <Divider />
         <Row gutter={[16, 16]}>
           <Col span={24}>
             <Layout ref={targetRef} style={{ background: "transparent" }}>
@@ -159,13 +162,14 @@ const PaidCollectionsPage = () => {
                   boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
                 }}
               >
-                <RETable
+                <RETUTTable
                   loading={isLoading}
                   columns={columns}
                   dataSource={filteredData}
                   pageSize={10}
                   total={totalDataLength()}
                   showSizeChanger={false}
+                  scroll={{ x: "max-content" }}
                 />
 
                 <Col>

@@ -19,10 +19,11 @@ import {
 } from "antd";
 import { CSVLink } from "react-csv";
 import { usePDF } from "react-to-pdf";
-import RETable from "@/components/ui/RETable";
 import { useGetCategorySummaryQuery } from "@/redux/api/uttoronapi/expense";
 import { DownloadOutlined, FilterOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import RETUTTable from "@/components/ui/UTTable";
+import { ColumnsType } from "antd/es/table";
 
 const { Title, Text } = Typography;
 const { Content } = Layout;
@@ -72,7 +73,7 @@ interface ApiResponseItem {
   }[];
 }
 
-const expenseColumns = [
+const expenseColumns: ColumnsType<any> = [
   {
     title: "Expense Code",
     dataIndex: "code",
@@ -129,7 +130,7 @@ const expenseColumns = [
   },
 ] as const;
 
-const categoryColumns = [
+const categoryColumns: ColumnsType<any> = [
   {
     title: "Expense Code",
     dataIndex: "code",
@@ -398,11 +399,11 @@ const ExpenseReportPage = () => {
         <Divider />
 
         <Row
-          gutter={16}
+          gutter={[16, 16]}
           className="summary-cards"
           style={{ textAlign: "center" }}
         >
-          <Col span={6}>
+          <Col xs={24} sm={12} md={12} lg={6}>
             <Card>
               <Statistic
                 title="Total Expenses"
@@ -413,7 +414,7 @@ const ExpenseReportPage = () => {
               />
             </Card>
           </Col>
-          <Col span={6}>
+          <Col xs={24} sm={12} md={12} lg={6}>
             <Card>
               <Statistic
                 title="Cash Expenses"
@@ -424,7 +425,7 @@ const ExpenseReportPage = () => {
               />
             </Card>
           </Col>
-          <Col span={6}>
+          <Col xs={24} sm={12} md={12} lg={6}>
             <Card>
               <Statistic
                 title="Bank Expenses"
@@ -435,7 +436,7 @@ const ExpenseReportPage = () => {
               />
             </Card>
           </Col>
-          <Col span={6}>
+          <Col xs={24} sm={12} md={12} lg={6}>
             <Card>
               <Statistic title="Transactions" value={expenses.length} />
             </Card>
@@ -463,12 +464,13 @@ const ExpenseReportPage = () => {
             <Suspense
               fallback={<Spin size="large" className="table-loading" />}
             >
-              <RETable
+              <RETUTTable
                 loading={isLoading}
                 columns={expenseColumns}
                 dataSource={expenses}
                 pageSize={15}
                 total={expenses.length}
+                scroll={{ x: "max-content" }}
               />
             </Suspense>
           </div>

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
-import { Layout, message, Button, Modal, Spin, Space } from "antd";
+import { Layout, message, Button, Modal, Spin, Space, Divider } from "antd";
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
@@ -14,7 +14,7 @@ import {
 } from "@/redux/api/uttoronapi/colletionsApi";
 import { CSVLink } from "react-csv";
 import { usePDF } from "react-to-pdf";
-import RETable from "@/components/ui/RETable";
+import RETUTTable from "@/components/ui/UTTable";
 const { Content } = Layout;
 
 const DuesCollectionsPage = () => {
@@ -217,10 +217,11 @@ const DuesCollectionsPage = () => {
           />
 
           <div ref={targetRef} className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-2xl font-semibold text-center my-6">
-              Dues List
-            </h2>
-            <RETable
+            <h2 style={{ textAlign: "center" }}>Your Dues List</h2>
+
+            <Divider />
+
+            <RETUTTable
               loading={false}
               columns={columns}
               dataSource={filteredData}
@@ -230,6 +231,7 @@ const DuesCollectionsPage = () => {
               // onChangeOfPagintion={onPaginationChange}
               // onChangeTable={onTableChange}
               // showPagination={true}
+              scroll={{ x: "max-content" }} // ✅ Allows horizontal scroll on small screens
             />
           </div>
         </div>

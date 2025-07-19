@@ -2,7 +2,7 @@
 
 import React, { useEffect, Suspense } from "react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { Layout, message, Button, Typography } from "antd";
+import { Layout, message, Button } from "antd";
 import { BackwardOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
@@ -11,10 +11,10 @@ import { getUserInfo } from "@/app/services/auth.service";
 import { useCollectionsQuery } from "@/redux/api/uttoronapi/colletionsApi";
 import { CSVLink } from "react-csv";
 import { usePDF } from "react-to-pdf";
-import RETable from "@/components/ui/RETable";
+import RETUTTable from "@/components/ui/UTTable";
+import { ColumnsType } from "antd/es/table";
 
 const { Content } = Layout;
-const { Paragraph } = Typography;
 
 const CollectionsVerificationPage = () => {
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
@@ -67,7 +67,7 @@ const CollectionsVerificationPage = () => {
   if (error) return <p>Failed to load profile. Please try again later.</p>;
   if (!data) return <p>No profile data found.</p>;
 
-  const columns = [
+  const columns: ColumnsType<any> = [
     {
       title: "For Month",
       key: "receivable_month",
@@ -79,23 +79,21 @@ const CollectionsVerificationPage = () => {
         </div>
       ),
     },
-    // {
-    //   title: "Received From",
-    //   key: "received_from",
-    //   render: (record: any) => (
-    //     <Paragraph>{record.received_from?.email || "N/A"}</Paragraph>
-    //   ),
-    //   sorter: (a: any, b: any) =>
-    //     (a.received_from?.email || "")
-    //       .toLowerCase()
-    //       .localeCompare((b.received_from?.email || "").toLowerCase()),
-    //   sortDirections: ["ascend", "descend"],
-    // },
+    {
+      title: "Received From",
+      key: "received_from",
+      render: (record: any) => <p> {record.received_from?.email || "N/A"}</p>,
+      sorter: (a: any, b: any) =>
+        (a.received_from?.email || "")
+          .toLowerCase()
+          .localeCompare((b.received_from?.email || "").toLowerCase()),
+      sortDirections: ["ascend", "descend"],
+    },
 
     {
       title: "Amount",
       key: "amount",
-      render: (record: any) => <Paragraph>${record.amount}</Paragraph>,
+      render: (record: any) => <p>${record.amount}</p>,
     },
     {
       title: "Paid on",
@@ -153,13 +151,14 @@ const CollectionsVerificationPage = () => {
               overflowX: "auto",
             }}
           >
-            <RETable
+            <RETUTTable
               loading={false}
               columns={columns}
               dataSource={filteredData}
               pageSize={10}
               total={totalDataLength()}
               showSizeChanger={false}
+              scroll={{ x: "max-content" }}
             />
           </Content>
         </Layout>

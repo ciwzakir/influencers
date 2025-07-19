@@ -28,13 +28,14 @@ const SideBar = () => {
       <div
         style={{
           color: "white",
-          fontSize: "2rem",
+          fontSize: "1rem",
           textAlign: "center",
           fontWeight: "bold",
           marginBottom: "1rem",
+          paddingTop: "2rem",
         }}
       >
-        {/* Dashboard */}
+        Dashboard
       </div>
       <Menu
         theme="dark"

@@ -249,7 +249,7 @@ export const sidebarItems = (role: string): MenuProps["items"] => {
     },
 
     {
-      label: "Monthly Subscriptions",
+      label: "Subscription Rates",
       key: "subscriptions",
       icon: <BankOutlined />,
       children: [
@@ -322,7 +322,7 @@ export const sidebarItems = (role: string): MenuProps["items"] => {
     },
 
     {
-      label: "Monthly Subscriptions",
+      label: "Subscription Rates",
       key: "subscriptions",
       icon: <BankOutlined />,
       children: [

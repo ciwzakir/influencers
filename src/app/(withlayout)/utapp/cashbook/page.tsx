@@ -182,9 +182,7 @@ const AllCashBookPage = () => {
             ]}
           />
 
-          <h2 className="text-2xl font-semibold text-center my-6">
-            All Cash Book Entries
-          </h2>
+          <h2 style={{ textAlign: "center" }}>All Cash Book Entries</h2>
 
           <div className="bg-white rounded-lg shadow p-6">
             <Table
