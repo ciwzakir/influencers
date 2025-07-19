@@ -2,7 +2,7 @@
 
 import React, { useEffect, Suspense } from "react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { Layout, Image, message, Button, Typography, Grid } from "antd";
+import { Layout, message, Button, Typography } from "antd";
 import { BackwardOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
@@ -14,7 +14,6 @@ import { usePDF } from "react-to-pdf";
 import RETable from "@/components/ui/RETable";
 
 const { Content } = Layout;
-const { useBreakpoint } = Grid;
 const { Paragraph } = Typography;
 
 const CollectionsVerificationPage = () => {
@@ -23,7 +22,6 @@ const CollectionsVerificationPage = () => {
   const role = userInfo?.user_role ?? "utapp";
 
   const router = useRouter();
-  const screens = useBreakpoint();
 
   const { data, error, isLoading } = useCollectionsQuery(
     {},
@@ -70,21 +68,6 @@ const CollectionsVerificationPage = () => {
   if (!data) return <p>No profile data found.</p>;
 
   const columns = [
-    {
-      title: "Image",
-      dataIndex: "payment_image",
-      render: (data: any) =>
-        data ? (
-          <Image
-            src={data}
-            width={screens.xs ? 40 : 60}
-            height={screens.xs ? 40 : 60}
-            alt="payment image"
-          />
-        ) : (
-          "No Image"
-        ),
-    },
     {
       title: "For Month",
       key: "receivable_month",
