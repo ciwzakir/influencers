@@ -35,6 +35,7 @@ const PaidCollectionsPage = () => {
   );
 
   const total_paid_by_user = data?.[data.length - 1]?.total_paid_by_user;
+  const total_deposit_by_all = data?.[data.length - 1]?.total_deposit_by_all;
 
   const filteredData = Array.isArray(data)
     ? data.filter((item) => item.current_payment_status === "paid")
@@ -169,11 +170,21 @@ const PaidCollectionsPage = () => {
 
                 <Col>
                   <Text strong style={{ fontSize: "16px" }}>
-                    Your Total Deposit Amount:{" "}
+                    Your Total Deposit:{" "}
                     <Text type="success">
                       {parseFloat(total_paid_by_user).toFixed(2)}
                     </Text>
                   </Text>
+                  <span style={{ margin: "5px 20px" }}>
+                    {" "}
+                    <Text strong style={{ fontSize: "16px" }}>
+                      All Members Deposit:{" "}
+                      <span style={{ color: "#4d98eeff" }}>
+                        {" "}
+                        {parseFloat(total_deposit_by_all).toFixed(2)}
+                      </span>
+                    </Text>
+                  </span>
                 </Col>
               </Content>
             </Layout>

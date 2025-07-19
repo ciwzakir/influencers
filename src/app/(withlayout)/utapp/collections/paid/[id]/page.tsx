@@ -321,10 +321,18 @@ const PaidDetails = ({ params }: any) => {
                           </li>
                           <li>
                             <Text type="secondary">
-                              Current Balance:{" "}
+                              Your Current Deposit:{" "}
                               <strong>
-                                {data?.deposit_to?.current_balance}
+                                {parseFloat(data.total_paid_by_user).toFixed(2)}
                               </strong>
+                            </Text>
+                          </li>
+                          <li>
+                            <Text strong style={{ fontSize: "16px" }}>
+                              All Members Deposit:{" "}
+                              {parseFloat(data?.total_deposit_by_all).toFixed(
+                                2
+                              )}
                             </Text>
                           </li>
                           <li>

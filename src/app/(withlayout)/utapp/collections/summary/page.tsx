@@ -1,12 +1,23 @@
 "use client";
 
 import React, { Suspense } from "react";
-import { Layout, message, Button, Typography } from "antd";
+import {
+  Layout,
+  message,
+  Button,
+  Typography,
+  Row,
+  Col,
+  Statistic,
+  Divider,
+} from "antd";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import { getUserInfo } from "@/app/services/auth.service";
 import { CSVLink } from "react-csv";
 import { usePDF } from "react-to-pdf";
 import RETable from "@/components/ui/RETable";
+import styles from "./Statistics.module.css";
+import "./Statistics.module.css";
 
 // Chart.js setup
 import {
@@ -20,6 +31,12 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { useCollectionSummariesQuery } from "@/redux/api/uttoronapi/collectionSummary";
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  DollarOutlined,
+  ExclamationOutlined,
+} from "@ant-design/icons";
 
 ChartJS.register(
   CategoryScale,
@@ -81,6 +98,20 @@ const CollectionsSummary = () => {
   };
 
   const emailSummaries = calculateSummary(data || []);
+
+  // Calculate grand totals
+  const grandTotals = emailSummaries.reduce(
+    (acc, curr) => {
+      acc.paid += curr.paid;
+      acc.due += curr.due;
+      acc.verification += curr.verification;
+      acc.total += curr.total;
+      return acc;
+    },
+    { paid: 0, due: 0, verification: 0, total: 0 }
+  );
+
+  // );
 
   // Chart Data
   const chartData = {
@@ -198,13 +229,63 @@ const CollectionsSummary = () => {
               <span style={{ color: "black" }}> COLLECTION </span>{" "}
               <span style={{ color: "#6495ed" }}> SUMMARIES</span>
             </h1>
+            <Divider />
+            <Row gutter={[8, 16]} style={{ marginBottom: "50px" }}>
+              <Col xs={24} sm={12} md={6} lg={6}>
+                <div className={styles.statisticCard}>
+                  <Statistic
+                    title="Total Due"
+                    value={grandTotals.due.toFixed(2)}
+                    precision={2}
+                    valueStyle={{ color: "#cf1322", fontSize: "20px" }}
+                    prefix={<ArrowDownOutlined />}
+                  />
+                </div>
+              </Col>
+
+              <Col xs={24} sm={12} md={6} lg={6}>
+                <div className={styles.statisticCard}>
+                  <Statistic
+                    title="Total Paid"
+                    value={grandTotals.paid.toFixed(2)}
+                    precision={2}
+                    valueStyle={{ color: "#3f8600", fontSize: "20px" }}
+                    prefix={<ArrowUpOutlined />}
+                  />
+                </div>
+              </Col>
+
+              <Col xs={24} sm={12} md={6} lg={6}>
+                <div className={styles.statisticCard}>
+                  <Statistic
+                    title="Pending Verification"
+                    value={grandTotals.verification.toFixed(2)}
+                    precision={2}
+                    valueStyle={{ color: "#faad14", fontSize: "20px" }}
+                    prefix={<ExclamationOutlined />}
+                  />
+                </div>
+              </Col>
+
+              <Col xs={24} sm={12} md={6} lg={6}>
+                <div className={styles.statisticCard}>
+                  <Statistic
+                    title="Total Receivable"
+                    value={grandTotals.total.toFixed(2)}
+                    precision={2}
+                    valueStyle={{ color: "#000408ff", fontSize: "20px" }}
+                    prefix={<DollarOutlined />}
+                  />
+                </div>
+              </Col>
+            </Row>
 
             {/* Table */}
             <RETable
               loading={false}
               columns={columns}
               dataSource={emailSummaries}
-              pageSize={15}
+              pageSize={8}
               total={emailSummaries.length}
               showSizeChanger={false}
             />

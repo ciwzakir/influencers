@@ -198,7 +198,7 @@ const CollectionsSummary = () => {
               loading={false}
               columns={columns}
               dataSource={emailSummaries}
-              pageSize={15}
+              pageSize={10}
               total={emailSummaries.length}
               showSizeChanger={false}
             />
