@@ -13,3 +13,18 @@
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
   transform: translateY(-4px);
 }
+
+@media screen and (max-width: 768px) {
+  .main-div {
+    padding: 10px !important;
+  }
+
+  .statisticCard {
+    text-align: center;
+    padding: 10px;
+  }
+
+  .bread-cumb {
+    padding-left: 10px;
+  }
+}

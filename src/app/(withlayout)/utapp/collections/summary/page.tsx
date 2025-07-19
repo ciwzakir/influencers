@@ -279,16 +279,16 @@ const CollectionsSummary = () => {
                 </div>
               </Col>
             </Row>
-
-            {/* Table */}
-            <RETable
-              loading={false}
-              columns={columns}
-              dataSource={emailSummaries}
-              pageSize={8}
-              total={emailSummaries.length}
-              showSizeChanger={false}
-            />
+            <div style={{ overflowX: "auto" }}>
+              <RETable
+                loading={false}
+                columns={columns}
+                dataSource={emailSummaries}
+                pageSize={8}
+                total={emailSummaries.length}
+                showSizeChanger={false}
+              />
+            </div>
           </Content>
         </Layout>
 
