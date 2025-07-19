@@ -79,18 +79,18 @@ const CollectionsVerificationPage = () => {
         </div>
       ),
     },
-    {
-      title: "Received From",
-      key: "received_from",
-      render: (record: any) => (
-        <Paragraph>{record.received_from?.email || "N/A"}</Paragraph>
-      ),
-      sorter: (a: any, b: any) =>
-        (a.received_from?.email || "")
-          .toLowerCase()
-          .localeCompare((b.received_from?.email || "").toLowerCase()),
-      sortDirections: ["ascend", "descend"],
-    },
+    // {
+    //   title: "Received From",
+    //   key: "received_from",
+    //   render: (record: any) => (
+    //     <Paragraph>{record.received_from?.email || "N/A"}</Paragraph>
+    //   ),
+    //   sorter: (a: any, b: any) =>
+    //     (a.received_from?.email || "")
+    //       .toLowerCase()
+    //       .localeCompare((b.received_from?.email || "").toLowerCase()),
+    //   sortDirections: ["ascend", "descend"],
+    // },
 
     {
       title: "Amount",
@@ -130,7 +130,7 @@ const CollectionsVerificationPage = () => {
 
   return (
     <Suspense fallback={<p>Loading profile...</p>}>
-      <div style={{ padding: "16px" }}>
+      <div style={{ padding: "5px" }}>
         <div style={{ marginBottom: "16px" }}>
           <UMBreadCrumb
             items={[
@@ -142,14 +142,14 @@ const CollectionsVerificationPage = () => {
 
         <Layout
           ref={targetRef}
-          style={{ background: "#f0f2f5", padding: "16px" }}
+          style={{ background: "#f0f2f5", padding: "5px" }}
         >
           <Content
             style={{
               maxWidth: "100%",
               background: "#fff",
-              padding: "16px",
-              borderRadius: "10px",
+              padding: "5px",
+              borderRadius: "5px",
               overflowX: "auto",
             }}
           >
