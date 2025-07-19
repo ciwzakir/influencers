@@ -15,11 +15,8 @@ import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import { getUserInfo } from "@/app/services/auth.service";
 import { CSVLink } from "react-csv";
 import { usePDF } from "react-to-pdf";
-import RETable from "@/components/ui/RETable";
 import styles from "./Statistics.module.css";
-import "./Statistics.module.css";
 
-// Chart.js setup
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -37,6 +34,8 @@ import {
   DollarOutlined,
   ExclamationOutlined,
 } from "@ant-design/icons";
+import RETUTTable from "@/components/ui/UTTable";
+import { ColumnsType } from "antd/es/table";
 
 ChartJS.register(
   CategoryScale,
@@ -99,7 +98,6 @@ const CollectionsSummary = () => {
 
   const emailSummaries = calculateSummary(data || []);
 
-  // Calculate grand totals
   const grandTotals = emailSummaries.reduce(
     (acc, curr) => {
       acc.paid += curr.paid;
@@ -111,9 +109,6 @@ const CollectionsSummary = () => {
     { paid: 0, due: 0, verification: 0, total: 0 }
   );
 
-  // );
-
-  // Chart Data
   const chartData = {
     labels: emailSummaries.map((entry) => entry.email),
     datasets: [
@@ -138,25 +133,21 @@ const CollectionsSummary = () => {
   const chartOptions = {
     responsive: true,
     plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: true,
-        text: "Subscriptions Summary",
-      },
+      legend: { position: "top" as const },
+      title: { display: true, text: "Subscriptions Summary" },
     },
   };
 
-  const columns = [
+  const columns: ColumnsType<UserSummary> = [
     {
       title: "Received From",
       key: "email",
       dataIndex: "email",
       render: (email: string) => <Paragraph>{email}</Paragraph>,
-      sorter: (a: UserSummary, b: UserSummary) =>
+      sorter: (a, b) =>
         a.email.toLowerCase().localeCompare(b.email.toLowerCase()),
       sortDirections: ["ascend", "descend"],
+      width: 180,
     },
     {
       title: "Due",
@@ -165,6 +156,7 @@ const CollectionsSummary = () => {
       render: (value: number) => (
         <Typography.Text type="danger">{value.toFixed(2)}</Typography.Text>
       ),
+      width: 100,
     },
     {
       title: "Paid",
@@ -173,6 +165,7 @@ const CollectionsSummary = () => {
       render: (value: number) => (
         <Typography.Text type="success">{value.toFixed(2)}</Typography.Text>
       ),
+      width: 100,
     },
     {
       title: "Verification",
@@ -181,12 +174,14 @@ const CollectionsSummary = () => {
       render: (value: number) => (
         <Typography.Text type="warning">{value.toFixed(2)}</Typography.Text>
       ),
+      width: 100,
     },
     {
       title: "Total",
       key: "total",
       dataIndex: "total",
       render: (value: number) => <p>{value.toFixed(2)}</p>,
+      width: 100,
     },
   ];
 
@@ -196,10 +191,7 @@ const CollectionsSummary = () => {
         <div className="bread-cumb">
           <UMBreadCrumb
             items={[
-              {
-                label: "Dues",
-                link: `/${user_role}/collections/dues`,
-              },
+              { label: "Dues", link: `/${user_role}/collections/dues` },
               {
                 label: "Outstanding",
                 link: `/${user_role}/collections/verification`,
@@ -220,73 +212,68 @@ const CollectionsSummary = () => {
               borderRadius: "10px",
             }}
           >
-            {/* Chart */}
             <div style={{ marginBottom: "40px" }}>
               <Bar data={chartData} options={chartOptions} />
             </div>
 
             <h1 style={{ margin: "50px", textAlign: "center" }}>
-              <span style={{ color: "black" }}> COLLECTION </span>{" "}
-              <span style={{ color: "#6495ed" }}> SUMMARIES</span>
+              <span style={{ color: "black" }}>COLLECTION </span>
+              <span style={{ color: "#6495ed" }}>SUMMARIES</span>
             </h1>
             <Divider />
+
             <Row gutter={[8, 16]} style={{ marginBottom: "50px" }}>
-              <Col xs={24} sm={12} md={6} lg={6}>
+              <Col xs={24} sm={12} md={6}>
                 <div className={styles.statisticCard}>
                   <Statistic
                     title="Total Due"
                     value={grandTotals.due.toFixed(2)}
-                    precision={2}
                     valueStyle={{ color: "#cf1322", fontSize: "20px" }}
                     prefix={<ArrowDownOutlined />}
                   />
                 </div>
               </Col>
-
-              <Col xs={24} sm={12} md={6} lg={6}>
+              <Col xs={24} sm={12} md={6}>
                 <div className={styles.statisticCard}>
                   <Statistic
                     title="Total Paid"
                     value={grandTotals.paid.toFixed(2)}
-                    precision={2}
                     valueStyle={{ color: "#3f8600", fontSize: "20px" }}
                     prefix={<ArrowUpOutlined />}
                   />
                 </div>
               </Col>
-
-              <Col xs={24} sm={12} md={6} lg={6}>
+              <Col xs={24} sm={12} md={6}>
                 <div className={styles.statisticCard}>
                   <Statistic
                     title="Pending Verification"
                     value={grandTotals.verification.toFixed(2)}
-                    precision={2}
                     valueStyle={{ color: "#faad14", fontSize: "20px" }}
                     prefix={<ExclamationOutlined />}
                   />
                 </div>
               </Col>
-
-              <Col xs={24} sm={12} md={6} lg={6}>
+              <Col xs={24} sm={12} md={6}>
                 <div className={styles.statisticCard}>
                   <Statistic
                     title="Total Receivable"
                     value={grandTotals.total.toFixed(2)}
-                    precision={2}
                     valueStyle={{ color: "#000408ff", fontSize: "20px" }}
                     prefix={<DollarOutlined />}
                   />
                 </div>
               </Col>
             </Row>
+
             <div style={{ overflowX: "auto" }}>
-              <RETable
+              <RETUTTable
                 loading={false}
                 columns={columns}
                 dataSource={emailSummaries}
                 pageSize={8}
                 total={emailSummaries.length}
                 showSizeChanger={false}
+                scroll={{ x: "max-content" }} // ✅ Allows horizontal scroll on small screens
               />
             </div>
           </Content>
