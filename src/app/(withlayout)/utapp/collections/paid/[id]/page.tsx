@@ -97,9 +97,11 @@ const PaidDetails = ({ params }: any) => {
               src={data?.payment_image}
               alt="Payment Proof"
               width="100%"
+              height="auto"
               style={{
                 objectFit: "cover",
                 borderRadius: 8,
+                maxHeight: 500,
               }}
               placeholder
               fallback="https://via.placeholder.com/400x300?text=No+Image"

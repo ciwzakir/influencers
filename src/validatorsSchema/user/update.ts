@@ -15,18 +15,18 @@ const updateProfileSchema = yup.object({
     present_address: yup
       .string()
       .required()
-      .min(20, "Present Address cannot exceed 20 characters")
+      .min(20, "Present Address should be min 20 characters")
       .max(255, "Present Address cannot exceed 255 characters"),
 
     permanent_address: yup
       .string()
       .required()
-      .min(20, "Permanent Address cannot exceed 20 characters")
+      .min(20, "Permanent Address should be min 20 characters")
       .max(255, "Permanent Address cannot exceed 255 characters"),
     employment_address: yup
       .string()
       .required()
-      .min(20, "Employment details cannot exceed 20 characters")
+      .min(20, "Employment details should be min 20 characters")
       .max(255, "Employment details cannot exceed 255 characters"),
     phone_number: yup
       .string()
@@ -37,7 +37,7 @@ const updateProfileSchema = yup.object({
     short_bio: yup
       .string()
       .required()
-      .min(250, "Min 120 characters")
+      .min(250, "Min 150 characters")
       .max(455, "Can not exceed 255 characters"),
   }),
   // qualifications: yup.array().of(yup.object()).nullable(),

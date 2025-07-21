@@ -89,7 +89,6 @@ const CollectionDetails = ({ params }: any) => {
         </Row>
       </Card>
 
-      {/* Main Content Card */}
       <Card style={{ maxWidth: 1200, margin: "0 auto" }}>
         <Row gutter={[24, 24]}>
           {/* Image Column */}
@@ -98,15 +97,16 @@ const CollectionDetails = ({ params }: any) => {
               src={data?.payment_image}
               alt="Payment Proof"
               width="100%"
+              height="auto"
               style={{
                 objectFit: "cover",
                 borderRadius: 8,
+                maxHeight: 500,
               }}
               placeholder
               fallback="https://via.placeholder.com/400x300?text=No+Image"
             />
           </Col>
-
           {/* Content Column */}
           <Col xs={24} md={14}>
             <Space direction="vertical" size="middle" style={{ width: "100%" }}>
@@ -325,6 +325,7 @@ const CollectionDetails = ({ params }: any) => {
           </Col>
         </Row>
       </Card>
+
       <Card>
         <Row justify="end">
           <Link href={`/${user_role}/collections/dues/edit/${id}`}>
